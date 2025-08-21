@@ -38,17 +38,17 @@ class PrimaryButton extends StatelessWidget {
           horizontal: horizontalPadding ?? 0,
           vertical: verticalPadding ?? 0,
         ),
-        height: height ?? 80,
+        height: height ?? 60,
         width: width ?? MediaQuery.of(context).size.width - 60,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(radius ?? 6),
-          color: color ?? Colors.greenAccent,
+          borderRadius: BorderRadius.circular(radius ?? 30),
+          color: color ?? AppColors.primaryColor,
           border: Border.all(color: borderColor ?? Colors.transparent),
         ),
         child: Center(
           child: Text(
             title,
-            style: textStyle ?? AppTextStyle.textStyle12WhiteW500,
+            style: textStyle ?? AppTextStyle.textStyle16WhiteW500,
           ),
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oyato_food/app/data/app_colors.dart';
 
 import '../data/app_text_style.dart';
 
@@ -28,8 +29,8 @@ class CustomTextFormField extends StatelessWidget {
     this.controller,
     this.fillColor,
     this.hintText,
-    this.focusBorderActive = false,
-    this.enableBorderActive = false,
+    this.focusBorderActive = true,
+    this.enableBorderActive = true,
     this.suffixIcon,
     this.iconOnTap,
     this.obsCureText = false,
@@ -52,7 +53,7 @@ class CustomTextFormField extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: TextFormField(
-        style: textStyle ?? AppTextStyle.textStyle12WhiteW500,
+        style: textStyle ?? AppTextStyle.textStyle12GreyW500,
         controller: controller,
         obscureText: obsCureText,
         keyboardType: textInputType,
@@ -64,14 +65,14 @@ class CustomTextFormField extends StatelessWidget {
             border: inputBorder,
             fillColor: fillColor ?? const Color(0xFFFDFBFF),
             hintText: hintText ?? 'Enter text',
-            hintStyle: hintTextStyle ?? AppTextStyle.textStyle12WhiteW500 ,
-            prefix: prefixIcon,
+            hintStyle: hintTextStyle ?? AppTextStyle.textStyle12GreyW500 ,
+            prefixIcon: prefixIcon,
             suffixIcon: InkWell(
                 onTap: iconOnTap, child: suffixIcon ?? const SizedBox()),
             focusedBorder: focusBorderActive
                 ? OutlineInputBorder(
               borderSide: BorderSide(
-                color: const Color(0xFF635976).withOpacity(0.2),
+                color: AppColors.primaryColor.withOpacity(0.4),
               ),
               borderRadius: BorderRadius.circular(8.0),
             )
@@ -80,7 +81,7 @@ class CustomTextFormField extends StatelessWidget {
                 ? OutlineInputBorder(
               borderSide: BorderSide(
                 color: enableBorderActiveColor ??
-                    const Color(0xFF635976).withOpacity(0.2),
+                     AppColors.primaryColor.withOpacity(0.4),
               ),
               borderRadius: BorderRadius.circular(8.0),
             )
