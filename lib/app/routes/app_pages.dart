@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/create_account/bindings/create_account_binding.dart';
+import '../modules/create_account/views/create_account_view.dart';
 import '../modules/dashboard/bindings/dashboard_binding.dart';
 import '../modules/dashboard/views/dashboard_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -36,6 +38,11 @@ class AppPages {
       name: _Paths.LOG_IN,
       page: () => const LogInView(),
       binding: LogInBinding(),
+    ),
+    GetPage(
+      name: _Paths.CREATE_ACCOUNT,
+      page: () => const CreateAccountView(),
+      binding: CreateAccountBinding(),
     ),
   ];
 }

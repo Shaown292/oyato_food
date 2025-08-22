@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:get/get.dart';
-import 'package:oyato_food/app/data/app_colors.dart';
-import 'package:oyato_food/app/data/app_text_style.dart';
-import 'package:oyato_food/app/modules/log_in/controllers/log_in_controller.dart';
-import 'package:oyato_food/app/widgets/custom_text_field.dart';
-import 'package:oyato_food/app/widgets/primary_button.dart';
 
-class LogInView extends GetView<LogInController> {
-  const LogInView({super.key});
+import '../../../data/app_colors.dart';
+import '../../../data/app_text_style.dart';
+import '../../../widgets/custom_text_field.dart';
+import '../../../widgets/primary_button.dart';
+import '../controllers/create_account_controller.dart';
 
+class CreateAccountView extends GetView<CreateAccountController> {
+  const CreateAccountView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,27 +25,37 @@ class LogInView extends GetView<LogInController> {
 
               // Title
                Text(
-                "Login Account",
-                style: AppTextStyle.textStyle26BlackBold,
-              ),
+                "Create Account",
+                style: AppTextStyle.textStyle26BlackBold,              ),
               const SizedBox(height: 6),
               Text(
-                "Please log in with your account",
+                "Start learning with create your account",
                 style: AppTextStyle.textStyle14GreyW500,
               ),
               const SizedBox(height: 30),
 
+              // Username Field
+               Text(
+                "Username",
+                style: AppTextStyle.textStyle14BlackBold,
+              ),
+              const SizedBox(height: 8),
+              CustomTextFormField(
+                prefixIcon: Icon(Icons.person, color: AppColors.primaryColor,),
+                hintText: "Enter your user name",
+              ),
+              const SizedBox(height: 20),
 
               // Email Field
                Text(
                 "Email",
-                 style: AppTextStyle.textStyle14BlackBold,
+                style: AppTextStyle.textStyle14BlackBold,
               ),
               const SizedBox(height: 8),
-             CustomTextFormField(
-               prefixIcon: Icon(Icons.mail_outline, color: AppColors.primaryColor,),
-               hintText: "Enter your mail",
-             ),
+              CustomTextFormField(
+                prefixIcon: Icon(Icons.mail_outline, color: AppColors.primaryColor,),
+                hintText: "Enter your mail",
+              ),
               const SizedBox(height: 20),
 
               // Password Field
@@ -60,7 +71,7 @@ class LogInView extends GetView<LogInController> {
               const SizedBox(height: 30),
 
               // Create Account Button
-           PrimaryButton(title: "Log in", onTap: () {}),
+              PrimaryButton(title: "Create Account", onTap: () {}),
 
               const SizedBox(height: 25),
 

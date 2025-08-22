@@ -1,7 +1,5 @@
 import 'package:get/get.dart';
-import 'package:oyato_food/app/modules/dashboard/views/dashboard_view.dart';
 import 'package:oyato_food/app/modules/log_in/views/log_in_view.dart';
-import 'package:oyato_food/app/routes/app_pages.dart';
 
 class SplashScreenController extends GetxController {
   //TODO: Implement SplashScreenController

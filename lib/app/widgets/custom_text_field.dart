@@ -53,7 +53,7 @@ class CustomTextFormField extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: TextFormField(
-        style: textStyle ?? AppTextStyle.textStyle12GreyW500,
+        style: textStyle ?? AppTextStyle.textStyle14GreyW500,
         controller: controller,
         obscureText: obsCureText,
         keyboardType: textInputType,
@@ -65,7 +65,7 @@ class CustomTextFormField extends StatelessWidget {
             border: inputBorder,
             fillColor: fillColor ?? const Color(0xFFFDFBFF),
             hintText: hintText ?? 'Enter text',
-            hintStyle: hintTextStyle ?? AppTextStyle.textStyle12GreyW500 ,
+            hintStyle: hintTextStyle ?? AppTextStyle.textStyle14GreyW500 ,
             prefixIcon: prefixIcon,
             suffixIcon: InkWell(
                 onTap: iconOnTap, child: suffixIcon ?? const SizedBox()),

@@ -13,9 +13,19 @@ class AppTextStyle {
     fontSize: 16,
     fontWeight: FontWeight.w500,
   );
-  static final textStyle12GreyW500 = GoogleFonts.inter(
+  static final textStyle14GreyW500 = GoogleFonts.inter(
     color: Colors.grey,
     fontSize: 14,
     fontWeight: FontWeight.w500,
+  );
+  static final textStyle26BlackBold = GoogleFonts.inter(
+    fontSize: 26,
+    fontWeight: FontWeight.bold,
+    color: Colors.black87,
+  );
+  static final textStyle14BlackBold = GoogleFonts.inter(
+    fontSize: 14,
+    fontWeight: FontWeight.bold,
+    color: Colors.black87,
   );
 }
