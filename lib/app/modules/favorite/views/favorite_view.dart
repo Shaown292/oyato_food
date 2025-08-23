@@ -2,21 +2,20 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import '../controllers/home_controller.dart';
+import '../controllers/favorite_controller.dart';
 
-class HomeView extends GetView<HomeController> {
-
-  const HomeView({super.key});
+class FavoriteView extends GetView<FavoriteController> {
+  const FavoriteView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('HomeView'),
+        title: const Text('FavoriteView'),
         centerTitle: true,
       ),
       body: const Center(
         child: Text(
-          'HomeView is',
+          'FavoriteView is working',
           style: TextStyle(fontSize: 20),
         ),
       ),

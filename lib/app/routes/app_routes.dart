@@ -8,6 +8,9 @@ abstract class Routes {
   static const SPLASH_SCREEN = _Paths.SPLASH_SCREEN;
   static const LOG_IN = _Paths.LOG_IN;
   static const CREATE_ACCOUNT = _Paths.CREATE_ACCOUNT;
+  static const FAVORITE = _Paths.FAVORITE;
+  static const CART = _Paths.CART;
+  static const PROFILE = _Paths.PROFILE;
 }
 
 abstract class _Paths {
@@ -17,4 +20,7 @@ abstract class _Paths {
   static const SPLASH_SCREEN = '/splash-screen';
   static const LOG_IN = '/log-in';
   static const CREATE_ACCOUNT = '/create-account';
+  static const FAVORITE = '/favorite';
+  static const CART = '/cart';
+  static const PROFILE = '/profile';
 }
