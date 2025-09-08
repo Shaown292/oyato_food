@@ -12,6 +12,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool obsCureText;
   final Widget? suffixIcon;
   final Widget? prefixIcon;
+  final Widget? prefix;
   final Function()? iconOnTap;
   final TextInputType? textInputType;
   final TextStyle? labelTextStyle;
@@ -45,7 +46,7 @@ class CustomTextFormField extends StatelessWidget {
     this.contentPadding,
     this.hintTextStyle,
     this.inputBorder,
-    this.prefixIcon, this.textStyle,
+    this.prefixIcon, this.textStyle, this.prefix,
   });
 
   @override
@@ -67,6 +68,7 @@ class CustomTextFormField extends StatelessWidget {
             hintText: hintText ?? 'Enter text',
             hintStyle: hintTextStyle ?? AppTextStyle.textStyle14GreyW500 ,
             prefixIcon: prefixIcon,
+            prefix: prefix,
             suffixIcon: InkWell(
                 onTap: iconOnTap, child: suffixIcon ?? const SizedBox()),
             focusedBorder: focusBorderActive

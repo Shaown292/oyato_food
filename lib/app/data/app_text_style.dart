@@ -28,4 +28,9 @@ class AppTextStyle {
     fontWeight: FontWeight.bold,
     color: Colors.black87,
   );
+  static final textStyle18BlackBold = GoogleFonts.inter(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+    color: Colors.black87,
+  );
 }
