@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:oyato_food/app/data/app_colors.dart';
 import 'package:oyato_food/app/data/app_text_style.dart';
 import 'package:oyato_food/app/modules/log_in/controllers/log_in_controller.dart';
+import 'package:oyato_food/app/routes/app_pages.dart';
 import 'package:oyato_food/app/widgets/custom_text_field.dart';
 import 'package:oyato_food/app/widgets/primary_button.dart';
 
@@ -44,6 +45,7 @@ class LogInView extends GetView<LogInController> {
              CustomTextFormField(
                prefixIcon: Icon(Icons.mail_outline, color: AppColors.primaryColor,),
                hintText: "Enter your mail",
+               controller: controller.emailController,
              ),
               const SizedBox(height: 20),
 
@@ -56,11 +58,56 @@ class LogInView extends GetView<LogInController> {
               CustomTextFormField(
                 prefixIcon: Icon(Icons.lock, color: AppColors.primaryColor,),
                 hintText: "Enter your password",
+                controller: controller.passwordController,
+                obsCureText: true,
+              ),
+              SizedBox(height: 10,),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  "Forget Password?",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey[500],
+                  ),
+                ),
               ),
               const SizedBox(height: 30),
 
-              // Create Account Button
-           PrimaryButton(title: "Log in", onTap: () {}),
+              Obx(
+                    () => controller.isLoading.value
+                    ? Center(child: CircularProgressIndicator())
+                    :   PrimaryButton(
+                  title: "Log in",
+                  onTap: () {
+
+                    if(controller.emailController.text.isEmpty || controller.passwordController.text.isEmpty ){
+                      return Get.dialog(
+                        AlertDialog(
+                          title: const Text("Error"),
+                          content: Text("Empty"),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Get.back(),
+                              child: const Text("OK"),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    else {
+                      return controller.login(
+                        password: controller.passwordController.text
+                            .toString()
+                            .trim(),
+                        email: controller.emailController.text
+                            .toString()
+                            .trim(),
+                      );
+                    }
+                  },
+                ),
+              ),
 
               const SizedBox(height: 25),
 
@@ -90,7 +137,7 @@ class LogInView extends GetView<LogInController> {
                   ),
                   icon: const FaIcon(FontAwesomeIcons.google, color: Colors.red),
                   label: const Text(
-                    "Sign Up with Google",
+                    "Sign In with Google",
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                   ),
                   onPressed: () {},
@@ -111,11 +158,30 @@ class LogInView extends GetView<LogInController> {
                   ),
                   icon: const FaIcon(FontAwesomeIcons.facebook, color: Colors.blue),
                   label: const Text(
-                    "Sign Up with Facebook",
+                    "Sign In with Facebook",
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                   ),
                   onPressed: () {},
                 ),
+              ),
+              SizedBox(height: 40,),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                      "Don't have an account?",
+                      style: AppTextStyle.textStyle14GreyW500
+                  ),
+                  SizedBox(width: 5,),
+                  InkWell(
+                    onTap: ()=> Get.toNamed(Routes.CREATE_ACCOUNT),
+                    child: Text(
+                        "Create Account",
+                        style: AppTextStyle.textStyle16GreenW500
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

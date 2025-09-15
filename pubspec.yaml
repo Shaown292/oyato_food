@@ -38,6 +38,7 @@ dependencies:
   google_fonts: ^6.3.0
   font_awesome_flutter: ^10.10.0
   carousel_slider: ^5.1.1
+  http: ^1.5.0
 
 dev_dependencies:
   flutter_test:
