@@ -54,9 +54,17 @@ class HomeView extends GetView<HomeController> {
       body: TabBarView(
         controller: controller.tabController,
         children:  [
-          HomeWidget(
-            imageUrls: controller.imageUrls,
-          ),
+          Obx((){
+            if(controller.isLoading.value){
+              return const Center(child: CircularProgressIndicator(color: AppColors.primaryColor,),);
+            }
+            if(controller.allProductData.isEmpty){
+              return const Center(child: Text("No Data"),);
+            }
+             return   HomeWidget(
+               productData: controller.allProductData, bannerData: controller.banners,
+             );
+          }),
 
           /// Tab 2 → Category content
           CategoryWidget(),

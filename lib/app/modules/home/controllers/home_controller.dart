@@ -1,9 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:oyato_food/app/api_service/api_provider.dart';
 import 'package:oyato_food/app/model/category_model.dart';
+
+import '../../../api_service/api_repository.dart';
+import '../../../model/all_product_model.dart';
+import '../../../model/banner_model.dart';
 
 class HomeController extends GetxController with GetSingleTickerProviderStateMixin {
   late TabController tabController;
+  final ApiRepository _repository = ApiRepository();
+  final ApiProvider _apiProvider = ApiProvider();
+
   final List<String> imageUrls = [
     "https://picsum.photos/id/237/800/400",  // Random dog
     "https://picsum.photos/id/1015/800/400", // Mountain landscape
@@ -12,53 +23,90 @@ class HomeController extends GetxController with GetSingleTickerProviderStateMix
     "https://picsum.photos/id/1018/800/400", // Forest road
   ];
   // Sample category data
-  List<CategoryModel> categories = [
-    CategoryModel(
-      name: 'New Arrivals',
-      productCount: 208,
-      imageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80',
-      color: const Color(0xFFE3F2FD),
-    ),
-    CategoryModel(
-      name: 'Clothes',
-      productCount: 358,
-      imageUrl: 'https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80',
-      color: const Color(0xFFF3E5F5),
-    ),
-    CategoryModel(
-      name: 'Bags',
-      productCount: 160,
-      imageUrl: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80',
-      color: const Color(0xFFFFF8E1),
-    ),
-    CategoryModel(
-      name: 'Shoes',
-      productCount: 230,
-      imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80',
-      color: const Color(0xFFE8F5E9),
-    ),
-    CategoryModel(
-      name: 'Electronics',
-      productCount: 189,
-      imageUrl: 'https://images.unsplash.com/photo-1468495244123-6c6c332eeece?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80',
-      color: const Color(0xFFE0F7FA),
-    ),
-    CategoryModel(
-      name: 'Accessories',
-      productCount: 142,
-      imageUrl: 'https://images.unsplash.com/photo-1590649880760-2d4b0f523de7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80',
-      color: const Color(0xFFFBE9E7),
-    ),
-  ];
+  var errorMessage = "".obs;
+  RxBool isLoading = false.obs;
+
+
+  final RxList<AllProductData> allProductData = <AllProductData>[].obs;
+  Rx<AllProductModel> productResponse = AllProductModel().obs;
+  RxList<BannerModel> banners = <BannerModel>[].obs;
+  RxList<CategoryData> categories = <CategoryData>[].obs;
+  Future<void> allProduct() async {
+    final String apiUrl = "${_apiProvider.baseUrl}/api/product.php"; // replace with your endpoint
+
+    try {
+      isLoading(true);
+
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: jsonEncode(
+            {
+              "get-product": "all",
+              "limit":"20",
+              "page":"1",
+              "gettoken": "0123456789"
+            }
+        ),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = jsonDecode(response.body);
+        productResponse.value = AllProductModel.fromJson(data);
+
+        if(productResponse.value.data != null){
+          allProductData.assignAll(productResponse.value.data!);
+          print(allProductData);
+        }
+        else{
+          allProductData.clear();
+        }
+      } else {
+        Get.snackbar("Error", "Failed: ${response.body}");
+      }
+    } catch (e) {
+      Get.snackbar("Exception", e.toString());
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  void fetchBanners() async {
+    try {
+      isLoading(true);
+      final data = await _repository.fetchBanners();
+      banners.value = data;
+
+
+    } catch (e) {
+      errorMessage.value = e.toString();
+    } finally {
+      isLoading(false);
+    }
+  }
+  void fetchCategories() async {
+    try {
+      isLoading(true);
+      final data = await _repository.fetchAllCategory();
+      categories.value = data;
+      debugPrint("Category Data ${categories[0].categoryName}");
+    } catch (e) {
+      errorMessage.value = e.toString();
+    } finally {
+      isLoading(false);
+    }
+  }
 
   @override
   void onInit() {
     super.onInit();
     tabController = TabController(length: 2, vsync: this);
+    allProduct();
+    fetchBanners();
+    fetchCategories();
   }
-  @override
-  void onClose() {
-    tabController.dispose();
-    super.onClose();
-  }
+
 }

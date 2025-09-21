@@ -5,13 +5,13 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:oyato_food/app/routes/app_pages.dart';
 
-import '../../../data/api_service.dart';
+import '../../../api_service/api_provider.dart';
 
 class CreateAccountController extends GetxController {
-  final ApiService _apiService = ApiService();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController fullNameController = TextEditingController();
+  final ApiProvider _apiProvider = ApiProvider();
 
   var isLoading = false.obs;
   var responseData = "".obs;
@@ -30,7 +30,7 @@ class CreateAccountController extends GetxController {
 
     try {
       final response = await http.post(
-        Uri.parse("${_apiService.baseUrl}/api/user-auth.php"),
+        Uri.parse("${_apiProvider.baseUrl}/api/user-auth.php"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
           "email": email,

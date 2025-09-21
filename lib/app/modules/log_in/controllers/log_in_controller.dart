@@ -3,19 +3,21 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:oyato_food/app/data/api_service.dart';
+import 'package:oyato_food/app/api_service/api_provider.dart';
+import 'package:oyato_food/app/global_controller/global_controller.dart';
 import 'package:oyato_food/app/routes/app_pages.dart';
 
 class LogInController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  final ApiService _apiService = ApiService();
+  final ApiProvider _apiProvider = ApiProvider();
+  GlobalController globalController = Get.find<GlobalController>();
 
-  var isLoading = false.obs;
-  var responseData = "".obs;
-  var errorMessage = "".obs;
+  RxBool isLoading = false.obs;
+  RxString responseData = "".obs;
+  RxString errorMessage = "".obs;
 
-  var status = ''.obs;
+  RxString status = ''.obs;
 
 
 
@@ -27,7 +29,7 @@ class LogInController extends GetxController {
 
     try {
       final response = await http.post(
-        Uri.parse("${_apiService.baseUrl}/api/user-auth.php"),
+        Uri.parse("${_apiProvider.baseUrl}/api/user-auth.php"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
           "email": email,
@@ -40,13 +42,21 @@ class LogInController extends GetxController {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final data = jsonDecode(response.body);
+        final  Map<String, dynamic> data = jsonDecode(response.body);
         status.value = data["status"] ?? '';
 
         if( status.value  == "success" ){
+          print(const JsonEncoder.withIndent('  ').convert(data));
+          globalController.setValue(data["response"]["userid"]);
+          print("UserId : ${globalController.userId}");
+          emailController.clear();  print(const JsonEncoder.withIndent('  ').convert(data));
+          globalController.setValue(data["response"]["userid"]);
+          print("UserId : ${globalController.userId}");
           emailController.clear();
+          Get.offNamed(Routes.DASHBOARD);
           passwordController.clear();
-          Get.toNamed(Routes.DASHBOARD);
+
+          
         }
         debugPrint(status.value);
         Get.snackbar(status.value, data["response"]["message"]);
