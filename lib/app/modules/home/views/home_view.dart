@@ -65,9 +65,19 @@ class HomeView extends GetView<HomeController> {
                productData: controller.allProductData, bannerData: controller.banners,
              );
           }),
+          Obx((){
+            if(controller.isLoading.value){
+              return const Center(child: CircularProgressIndicator(color: AppColors.primaryColor,),);
+            }
+            if(controller.categories.isEmpty){
+              return const Center(child: Text("No Data"),);
+            }
+             return CategoryWidget(
+                 categoryData: controller.categories,
+               );
+          }),
 
-          /// Tab 2 → Category content
-          CategoryWidget(),
+
         ],
       ),
     );

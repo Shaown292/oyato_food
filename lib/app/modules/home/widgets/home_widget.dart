@@ -47,7 +47,9 @@ class HomeWidget extends StatelessWidget {
                   final product = productData![index];
                   return InkWell(
                     onTap: (){
-
+                      Get.toNamed(Routes.DETAIL_PAGE, arguments:
+                         productData![index].productID.toString()
+                      );
                     },
                     child: Container(
                       decoration: BoxDecoration(

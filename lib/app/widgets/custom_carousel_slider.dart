@@ -12,11 +12,19 @@ class CustomCarouselSlider extends StatelessWidget {
       itemCount: sliderData.length,
       itemBuilder: (context, index, realIndex) {
         final url = sliderData[index].sideImage;
-        return Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(image: NetworkImage(url), fit: BoxFit.cover)
-          ),
+        return Image.network(
+          url,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              height: 180,
+              width: MediaQuery.of(context).size.width * 0.85,
+              color: Colors.grey[300],
+              child: Icon(Icons.broken_image, color: Colors.grey),
+            );
+          },
         );
+
       },
       options: CarouselOptions(
         height: 180,

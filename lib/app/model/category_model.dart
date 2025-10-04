@@ -1,55 +1,63 @@
-class AllCategory {
-  List<CategoryData>? data;
+class Subcategory {
+  final String id;
+  final String name;
+  final String description;
+  final String logo;
+  final String totalProduct;
+  final String date;
 
-  AllCategory({this.data});
+  Subcategory({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.logo,
+    required this.totalProduct,
+    required this.date,
+  });
 
-  AllCategory.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null) {
-      data = <CategoryData>[];
-      json['data'].forEach((v) {
-        data!.add(CategoryData.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    return data;
+  factory Subcategory.fromJson(Map<String, dynamic> json) {
+    return Subcategory(
+      id: json['id'] ?? "",
+      name: json['Name'] ?? "",
+      description: json['Description'] ?? "",
+      logo: json['Logo'] ?? "",
+      totalProduct: json['TotalProduct'] ?? "0",
+      date: json['date'] ?? "",
+    );
   }
 }
 
-class CategoryData {
-  String? id;
-  String? categoryID;
-  String? categoryName;
-  String? totalProduct;
-  String? categoryImage;
+class Category {
+  final String id;
+  final String name;
+  final String description;
+  final String logo;
+  final String totalProduct;
+  final String date;
+  final List<Subcategory> subcategories;
 
-  CategoryData(
-      {this.id,
-        this.categoryID,
-        this.categoryName,
-        this.totalProduct,
-        this.categoryImage});
+  Category({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.logo,
+    required this.totalProduct,
+    required this.date,
+    required this.subcategories,
+  });
 
-  CategoryData.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    categoryID = json['CategoryID'];
-    categoryName = json['CategoryName'];
-    totalProduct = json['TotalProduct'];
-    categoryImage = json['CategoryImage'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['CategoryID'] = categoryID;
-    data['CategoryName'] = categoryName;
-    data['TotalProduct'] = totalProduct;
-    data['CategoryImage'] = categoryImage;
-    return data;
+  factory Category.fromJson(Map<String, dynamic> json) {
+    return Category(
+      id: json['id'] ?? "",
+      name: json['Name'] ?? "",
+      description: json['Description'] ?? "",
+      logo: json['Logo'] ?? "",
+      totalProduct: json['TotalProduct'] ?? "0",
+      date: json['date'] ?? "",
+      subcategories: (json['Subcategories'] as List?)
+          ?.map((e) => Subcategory.fromJson(e))
+          .toList() ??
+          [],
+    );
   }
 }
