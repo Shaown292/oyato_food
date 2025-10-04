@@ -246,7 +246,7 @@ class DetailPageView extends GetView<DetailPageController> {
                                 child: Image.network(
                                   controller.relatedProducts[index].image,
                                   height: 150,
-                                  width: 200,
+                                  width: 150,
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {
                                     return Container(
