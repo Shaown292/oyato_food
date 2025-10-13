@@ -1,3 +1,6 @@
+// models/product.dart
+import 'dart:convert';
+
 class Inventory {
   final String manufacturer;
   final String vendor;
@@ -19,6 +22,15 @@ class Inventory {
       tags: json['Tags'] ?? "",
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'Manufacturer': manufacturer,
+      'Vendor': vendor,
+      'Category': category,
+      'Tags': tags,
+    };
+  }
 }
 
 class Product {
@@ -36,6 +48,9 @@ class Product {
   final Inventory inventory;
   final String type;
 
+  // 🛒 Quantity field for cart management
+  int quantity;
+
   Product({
     required this.productID,
     required this.title,
@@ -50,6 +65,7 @@ class Product {
     required this.size,
     required this.inventory,
     required this.type,
+    this.quantity = 1,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -59,7 +75,10 @@ class Product {
       shortDescription: json['Short_Description'] ?? "",
       description: json['Description'] ?? "",
       image: json['Image'] ?? "",
-      galleryImages: (json['Gallery_img'] as List?)?.map((e) => e.toString()).toList() ?? [],
+      galleryImages: (json['Gallery_img'] as List?)
+          ?.map((e) => e.toString())
+          .toList() ??
+          [],
       regularPrice: json['RegularPrice'] ?? "",
       sellsPrice: json['SellsPrice'] ?? "",
       sku: json['SKU'] ?? "",
@@ -67,8 +86,30 @@ class Product {
       size: json['Size'] ?? "",
       inventory: Inventory.fromJson(json['Inventory'] ?? {}),
       type: json['type'] ?? "",
+      quantity: json['quantity'] ?? 1,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'ProductID': productID,
+      'Title': title,
+      'Short_Description': shortDescription,
+      'Description': description,
+      'Image': image,
+      'Gallery_img': galleryImages,
+      'RegularPrice': regularPrice,
+      'SellsPrice': sellsPrice,
+      'SKU': sku,
+      'StockLimit': stockLimit,
+      'Size': size,
+      'Inventory': inventory.toJson(),
+      'type': type,
+      'quantity': quantity,
+    };
+  }
+
+  String encode() => jsonEncode(toJson());
+  factory Product.decode(String source) =>
+      Product.fromJson(jsonDecode(source));
 }
-
-

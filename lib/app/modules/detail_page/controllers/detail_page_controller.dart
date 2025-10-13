@@ -1,12 +1,14 @@
-import 'package:get/get.dart';
+import 'dart:convert';
 
+import 'package:get/get.dart';
+import 'package:oyato_food/app/modules/dashboard/controllers/dashboard_controller.dart';
 import '../../../api_service/api_repository.dart';
 import '../../../model/related_product.dart';
 import '../../../model/single_product_model.dart';
+import '../../cart/controllers/cart_controller.dart';
 
 class DetailPageController extends GetxController {
   final ApiRepository _repository = ApiRepository();
-
   RxString productId = "".obs;
   RxInt quantity = 1.obs;
   RxDouble price = 1.0.obs;
@@ -15,6 +17,9 @@ class DetailPageController extends GetxController {
   RxList<Product> products = <Product>[].obs;
   RxList<RelatedProduct> relatedProducts = <RelatedProduct>[].obs;
   RxString errorMessage = "".obs;
+  // final cartController = Get.put(CartController());
+  // final DashboardController dashboardController = Get.find(DashboardController());
+
 
   void fetchProducts() async {
     try {
@@ -43,6 +48,22 @@ class DetailPageController extends GetxController {
       isLoading(false);
     }
   }
+  void addToCart() async {
+    try {
+      print("working 1");
+      isLoading(true);
+      errorMessage("");
+      await _repository.addToCart(productId: productId.value);
+      // relatedProducts.assignAll(data);
+    } catch (e) {
+      // print("working 2");
+      errorMessage(e.toString());
+    } finally {
+      // print("working 3");
+      isLoading(false);
+    }
+  }
+
 
   @override
   void onInit() {
@@ -51,6 +72,7 @@ class DetailPageController extends GetxController {
     print("entered $productId");
     fetchProducts();
     fetchRelatedProducts();
+    // loadCart();
     // TODO: implement onInit
     super.onInit();
   }

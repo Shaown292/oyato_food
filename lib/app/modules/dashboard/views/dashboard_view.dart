@@ -27,10 +27,40 @@ class DashboardView extends GetView<DashboardController> {
         type: BottomNavigationBarType.fixed,
         selectedItemColor: AppColors.primaryColor,
         unselectedItemColor: Colors.grey[500],
-        items: const [
+        items:  [
           BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.house), label: "Home"),
           BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.heart), label: "Favorite"),
-          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.cartPlus), label: "Cart"),
+          BottomNavigationBarItem(icon:
+          Stack(
+            children: [
+              FaIcon(FontAwesomeIcons.cartPlus),
+              if (controller.cartController.cartItems.isNotEmpty)
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Container(
+                    padding: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 16,
+                      minHeight: 16,
+                    ),
+                    child: Text(
+                      '${controller.cartController.cartItems.length}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+            ],
+          ), label: "Cart"),
           BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.user), label: "Profile"),
         ],
       ),

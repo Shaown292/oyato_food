@@ -53,31 +53,32 @@ class HomeView extends GetView<HomeController> {
       ),
       body: TabBarView(
         controller: controller.tabController,
-        children:  [
-          Obx((){
-            if(controller.isLoading.value){
-              return const Center(child: CircularProgressIndicator(color: AppColors.primaryColor,),);
-            }
-            if(controller.allProductData.isEmpty){
-              return const Center(child: Text("No Data"),);
-            }
-             return   HomeWidget(
-               productData: controller.allProductData, bannerData: controller.banners,
-             );
+        children: [
+          Obx(() {
+            return controller.isLoading.value
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.primaryColor,
+                    ),
+                  )
+                : controller.allProductData.isEmpty
+                ? Center(child: Text("Check your internet"))
+                : HomeWidget(
+                    productData: controller.allProductData,
+                    bannerData: controller.banners,
+                  );
           }),
-          Obx((){
-            if(controller.isLoading.value){
-              return const Center(child: CircularProgressIndicator(color: AppColors.primaryColor,),);
+          Obx(() {
+            if (controller.isLoading.value) {
+              return const Center(
+                child: CircularProgressIndicator(color: AppColors.primaryColor),
+              );
             }
-            if(controller.categories.isEmpty){
-              return const Center(child: Text("No Data"),);
+            if (controller.categories.isEmpty) {
+              return const Center(child: Text("No Data"));
             }
-             return CategoryWidget(
-                 categoryData: controller.categories,
-               );
+            return CategoryWidget(categoryData: controller.categories);
           }),
-
-
         ],
       ),
     );

@@ -4,7 +4,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:oyato_food/app/data/app_colors.dart';
 import 'package:oyato_food/app/data/app_text_style.dart';
+import 'package:oyato_food/app/routes/app_pages.dart';
 
+import '../../cart/controllers/cart_controller.dart';
 import '../controllers/detail_page_controller.dart';
 
 class DetailPageView extends GetView<DetailPageController> {
@@ -17,15 +19,9 @@ class DetailPageView extends GetView<DetailPageController> {
       appBar: AppBar(
         title: Text("Details Page", style: AppTextStyle.textStyle14BlackBold),
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: FaIcon(
-              FontAwesomeIcons.cartShopping,
-              color: AppColors.primaryColor,
-            ),
-          ),
-        ],
+       leading: IconButton(onPressed: (){
+         Get.offAllNamed(Routes.DASHBOARD);
+       }, icon: Icon(Icons.arrow_back)),
       ),
       body: SafeArea(
         child: Obx(() {
@@ -105,41 +101,7 @@ class DetailPageView extends GetView<DetailPageController> {
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      Obx(
-                                            () => Row(
-                                          children: [
-                                            IconButton(
-                                              onPressed: () {
-                                                if (controller.quantity > 1) {
-                                                  controller.total.value =
-                                                      controller.price.value *
-                                                          controller.quantity.value;
-                                                  controller.quantity--;
-                                                }
-                                              },
-                                              icon: const Icon(
-                                                Icons.remove_circle_outline,
-                                              ),
-                                            ),
-                                            Text(
-                                              controller.quantity.toString(),
-                                              style: TextStyle(fontSize: 16),
-                                            ),
-                                            IconButton(
-                                              onPressed: () {
-                                                controller.quantity++;
-                                                controller.total.value =
-                                                    controller.price.value *
-                                                        controller.quantity.value;
-                                                debugPrint(
-                                                  "price ${controller.price.value}, Q: ${controller.quantity.value}",
-                                                );
-                                              },
-                                              icon: const Icon(Icons.add_circle_outline),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+
                                     ],
                                   ),
 
@@ -188,7 +150,10 @@ class DetailPageView extends GetView<DetailPageController> {
                                     ),
                                   ),
                                   ElevatedButton.icon(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      controller.addToCart();
+                                      Get.put(CartController());
+                                    },
                                     icon: const Icon(Icons.shopping_cart_outlined),
                                     label: const Text("Add to Cart"),
                                     style: ElevatedButton.styleFrom(
@@ -245,7 +210,7 @@ class DetailPageView extends GetView<DetailPageController> {
                                     topRight: Radius.circular(16)),
                                 child: Image.network(
                                   controller.relatedProducts[index].image,
-                                  height: 150,
+                                height: 150,
                                   width: 150,
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {

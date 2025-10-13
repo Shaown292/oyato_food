@@ -52,12 +52,12 @@ class HomeController extends GetxController with GetSingleTickerProviderStateMix
       isLoading.value = true;
       final data = await _repository.fetchAllProduct();
       allProductData.value = data;
-
+      // if(data.isEmpty){
+      //   isLoading.value = false;
+      // }
 
     } catch (e) {
       errorMessage.value = e.toString();
-    } finally {
-      isLoading(false);
     }
   }
   void fetchCategories() async {
