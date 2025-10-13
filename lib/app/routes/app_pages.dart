@@ -4,6 +4,8 @@ import '../modules/cart/bindings/cart_binding.dart';
 import '../modules/cart/views/cart_view.dart';
 import '../modules/category_product/bindings/category_product_binding.dart';
 import '../modules/category_product/views/category_product_view.dart';
+import '../modules/checkout/bindings/checkout_binding.dart';
+import '../modules/checkout/views/checkout_view.dart';
 import '../modules/create_account/bindings/create_account_binding.dart';
 import '../modules/create_account/views/create_account_view.dart';
 import '../modules/dashboard/bindings/dashboard_binding.dart';
@@ -78,6 +80,11 @@ class AppPages {
       name: _Paths.CATEGORY_PRODUCT,
       page: () => const CategoryProductView(),
       binding: CategoryProductBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHECKOUT,
+      page: () => const CheckoutView(),
+      binding: CheckoutBinding(),
     ),
   ];
 }
