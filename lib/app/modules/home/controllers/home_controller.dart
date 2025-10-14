@@ -12,12 +12,13 @@ import '../../../api_service/api_repository.dart';
 import '../../../model/all_product_model.dart';
 import '../../../model/banner_model.dart';
 
-class HomeController extends GetxController with GetSingleTickerProviderStateMixin {
+class HomeController extends GetxController
+    with GetSingleTickerProviderStateMixin {
   late TabController tabController;
   final ApiRepository _repository = ApiRepository();
 
   final List<String> imageUrls = [
-    "https://picsum.photos/id/237/800/400",  // Random dog
+    "https://picsum.photos/id/237/800/400", // Random dog
     "https://picsum.photos/id/1015/800/400", // Mountain landscape
     "https://picsum.photos/id/1025/800/400", // Puppy
     "https://picsum.photos/id/1003/800/400", // River
@@ -26,7 +27,6 @@ class HomeController extends GetxController with GetSingleTickerProviderStateMix
   // Sample category data
   RxString errorMessage = "".obs;
   RxBool isLoading = false.obs;
-
 
   RxList<AllProductData> allProductData = <AllProductData>[].obs;
   Rx<AllProductModel> productResponse = AllProductModel().obs;
@@ -39,27 +39,34 @@ class HomeController extends GetxController with GetSingleTickerProviderStateMix
       isLoading(true);
       final data = await _repository.fetchBanners();
       banners.value = data;
-
-
     } catch (e) {
       errorMessage.value = e.toString();
     } finally {
       isLoading(false);
     }
   }
+
   void fetchAllProduct() async {
     try {
-      isLoading.value = true;
+      isLoading(true);
+      print("Hi ${isLoading.value}");
       final data = await _repository.fetchAllProduct();
-      allProductData.value = data;
-      // if(data.isEmpty){
-      //   isLoading.value = false;
-      // }
+      print(isLoading.value);
+      if (data.isEmpty) {
+        allProductData.clear();
+      }
+      else{
+        print(isLoading.value);
+        allProductData.value = data;
+      }
 
     } catch (e) {
       errorMessage.value = e.toString();
+    } finally {
+      isLoading.value = false;
     }
   }
+
   void fetchCategories() async {
     try {
       isLoading(true);
@@ -71,6 +78,7 @@ class HomeController extends GetxController with GetSingleTickerProviderStateMix
       isLoading(false);
     }
   }
+
   void fetchBestSelling() async {
     try {
       isLoading(true);
@@ -93,5 +101,4 @@ class HomeController extends GetxController with GetSingleTickerProviderStateMix
     fetchCategories();
     fetchBestSelling();
   }
-
 }

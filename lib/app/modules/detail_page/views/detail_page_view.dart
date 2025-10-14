@@ -152,7 +152,7 @@ class DetailPageView extends GetView<DetailPageController> {
                                   ElevatedButton.icon(
                                     onPressed: () {
                                       controller.addToCart();
-                                      Get.put(CartController());
+                                      // Get.put(CartController());
                                     },
                                     icon: const Icon(Icons.shopping_cart_outlined),
                                     label: const Text("Add to Cart"),

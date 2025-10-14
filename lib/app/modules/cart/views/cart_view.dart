@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:oyato_food/app/routes/app_pages.dart';
 import 'package:oyato_food/app/widgets/primary_button.dart';
 
 import '../../../model/single_product_model.dart';
@@ -66,7 +67,9 @@ class CartView extends GetView<CartController> {
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 8.0),
-                child: PrimaryButton( width: MediaQuery.of(context).size.width * 0.6 - 10,title: "Checkout", onTap: (){}),
+                child: PrimaryButton( width: MediaQuery.of(context).size.width * 0.6 - 10,title: "Checkout", onTap: (){
+                  Get.toNamed(Routes.CHECKOUT);
+                }),
               )
             ],
           ),

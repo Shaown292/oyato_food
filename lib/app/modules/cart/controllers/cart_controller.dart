@@ -91,20 +91,6 @@ class CartController extends GetxController {
     }
   }
 
-  /// 🗑️ Manual remove (like delete button)
-  // void removeItem(String id) {
-  //   final index = cartItems.indexWhere((item) => item.id == id);
-  //   if (index != -1) {
-  //     final item = cartItems[index];
-  //     cartItems.removeAt(index);
-  //     removeItems(productId: item.productID, id: item.id);
-  //     Get.snackbar(
-  //       'Item Removed',
-  //       '${item.title} has been removed from your cart',
-  //       snackPosition: SnackPosition.BOTTOM,
-  //     );
-  //   }
-  // }
 
 
   @override

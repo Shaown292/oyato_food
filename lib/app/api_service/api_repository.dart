@@ -42,7 +42,6 @@ class ApiRepository {
 
     if (response["status"] == "success") {
       final List data = response["data"];
-      print("Syate ${response["status"]}");
       return data.map((e) => AllProductData.fromJson(e)).toList();
 
     } else {

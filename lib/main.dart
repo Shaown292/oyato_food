@@ -12,6 +12,7 @@ void main() async{
   Get.put(GlobalController(prefs));
   runApp(
     GetMaterialApp(
+      debugShowCheckedModeBanner: false, // <-- Hide debug banner
       title: "Application",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
