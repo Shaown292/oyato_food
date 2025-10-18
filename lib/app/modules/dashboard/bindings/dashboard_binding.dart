@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:oyato_food/app/modules/discount/controllers/discount_controller.dart';
 
 import '../../cart/controllers/cart_controller.dart';
 import '../../favorite/controllers/favorite_controller.dart';
@@ -11,6 +12,7 @@ class DashboardBinding extends Bindings {
   void dependencies() {
     Get.put(DashboardController());
     Get.put(FavoriteController());
+    Get.put(DiscountController());
     Get.put(ProfileController());
   }
 }

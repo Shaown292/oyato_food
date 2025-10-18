@@ -48,6 +48,20 @@ class ApiRepository {
       throw Exception(response["response"]["message"] ?? "Something went wrong");
     }
   }
+  Future<List<AllProductData>> fetchDiscountProduct() async {
+    final response = await _apiProvider.post("api/product.php", {
+      "get-product": "discount",
+      "gettoken": token
+    });
+
+    if (response["status"] == "success") {
+      final List data = response["data"];
+      return data.map((e) => AllProductData.fromJson(e)).toList();
+
+    } else {
+      throw Exception(response["response"]["message"] ?? "Something went wrong");
+    }
+  }
   Future<List<Category>> fetchAllCategory() async {
     // If your POST API requires a body, pass it here
     final response = await _apiProvider.post("api/inventory.php", {
@@ -95,6 +109,21 @@ class ApiRepository {
   Future<List<BestSellingProduct>> fetchBestSellingProducts() async {
     final response = await _apiProvider.post("api/product.php", {
       "get-product": "BestSeeling",
+      "gettoken": token
+    });
+
+    if (response["status"] == "success") {
+      final List related = response["data"];
+      debugPrint("API CALL OK");
+      return related.map((e) => BestSellingProduct.fromJson(e)).toList();
+    } else {
+      throw Exception(response["response"]["message"] ?? "Something went wrong");
+    }
+  }
+  Future<List<BestSellingProduct>> fetchPopularProducts() async {
+    final response = await _apiProvider.post("api/inventory.php", {
+      "inventory": "PopularCategories",
+      "Cetagorylimit": "8",
       "gettoken": token
     });
 

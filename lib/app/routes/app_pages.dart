@@ -12,6 +12,8 @@ import '../modules/dashboard/bindings/dashboard_binding.dart';
 import '../modules/dashboard/views/dashboard_view.dart';
 import '../modules/detail_page/bindings/detail_page_binding.dart';
 import '../modules/detail_page/views/detail_page_view.dart';
+import '../modules/discount/bindings/discount_binding.dart';
+import '../modules/discount/views/discount_view.dart';
 import '../modules/favorite/bindings/favorite_binding.dart';
 import '../modules/favorite/views/favorite_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -85,6 +87,11 @@ class AppPages {
       name: _Paths.CHECKOUT,
       page: () => const CheckoutView(),
       binding: CheckoutBinding(),
+    ),
+    GetPage(
+      name: _Paths.DISCOUNT,
+      page: () => const DiscountView(),
+      binding: DiscountBinding(),
     ),
   ];
 }

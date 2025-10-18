@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:oyato_food/app/data/app_colors.dart';
 import 'package:oyato_food/app/modules/cart/views/cart_view.dart';
+import 'package:oyato_food/app/modules/discount/views/discount_view.dart';
 import '../../favorite/views/favorite_view.dart';
 import '../../home/views/home_view.dart';
 import '../../profile/views/profile_view.dart';
@@ -17,6 +18,7 @@ class DashboardView extends GetView<DashboardController> {
     const HomeView(),
     const FavoriteView(),
      const CartView(),
+      const DiscountView(),
       const ProfileView(),
     ];
     return   Obx(() => Scaffold(
@@ -61,6 +63,7 @@ class DashboardView extends GetView<DashboardController> {
                 ),
             ],
           ), label: "Cart"),
+          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.receipt), label: "Discount"),
           BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.user), label: "Profile"),
         ],
       ),

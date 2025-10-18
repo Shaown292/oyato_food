@@ -12,7 +12,8 @@ class HomeWidget extends StatelessWidget {
   final List<BannerModel>? bannerData;
   final List<BestSellingProduct>? bestData;
   final List<BestSellingProduct>? mustHaveData;
-  const HomeWidget({super.key, required this.productData, required this.bannerData,required this.bestData, required this.mustHaveData});
+  final List<BestSellingProduct>? popularProductData;
+  const HomeWidget({super.key, required this.productData, required this.bannerData,required this.bestData, required this.mustHaveData,required this.popularProductData});
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +93,80 @@ class HomeWidget extends StatelessWidget {
                                           style: const TextStyle(color: Colors.grey),
                                         ),
                                       ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 10,),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    )),
+
+                    const SizedBox(height: 16),
+
+
+                  ],
+                ),
+              ),
+
+              /// Popular Product
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Popular Product", style: AppTextStyle.textStyle18BlackBold,),
+                    SizedBox(height: 10,),
+                    // Horizontal Product List
+                    Obx(() => SizedBox(
+                      height: 200,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: popularProductData!.length,
+                        itemBuilder: (context, index) {
+                          final product = popularProductData![index];
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 12),
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: 180,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 5,
+                                        offset: const Offset(0, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: const BorderRadius.vertical(
+                                            top: Radius.circular(12)),
+                                        child: Image.network(
+                                          product.productImage,
+                                          height: 120,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5),
+                                        child: Text(
+                                          product.categoryName,
+                                          style: AppTextStyle.textStyle18BlackBold,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+
                                     ],
                                   ),
                                 ),

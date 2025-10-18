@@ -23,11 +23,12 @@ class HomeController extends GetxController
   RxBool isLoading = false.obs;
 
   RxList<AllProductData> allProductData = <AllProductData>[].obs;
-  Rx<AllProductModel> productResponse = AllProductModel().obs;
+  // Rx<AllProductModel> productResponse = AllProductModel().obs;
   RxList<BannerModel> banners = <BannerModel>[].obs;
   RxList<Category> categories = <Category>[].obs;
   RxList<BestSellingProduct> bestSelling = <BestSellingProduct>[].obs;
   RxList<BestSellingProduct> mustHave = <BestSellingProduct>[].obs;
+  RxList<BestSellingProduct> popularProduct = <BestSellingProduct>[].obs;
 
   void fetchBanners() async {
     try {
@@ -74,13 +75,15 @@ class HomeController extends GetxController
     }
   }
 
-  void fetchBestSelling() async {
+  void fetchBestSellingMustHavePopular() async {
     try {
       isLoading(true);
       final bestSellingData = await _repository.fetchBestSellingProducts();
       final mustHaveData = await _repository.fetchMustHaveProducts();
+      final popularProductData = await _repository.fetchPopularProducts();
       bestSelling.value = bestSellingData;
       mustHave.value = mustHaveData;
+      popularProduct.value = popularProductData;
       debugPrint("Data ${bestSelling[0].productID}");
     } catch (e) {
       errorMessage.value = e.toString();
@@ -96,6 +99,6 @@ class HomeController extends GetxController
     fetchAllProduct();
     fetchBanners();
     fetchCategories();
-    fetchBestSelling();
+    fetchBestSellingMustHavePopular();
   }
 }
