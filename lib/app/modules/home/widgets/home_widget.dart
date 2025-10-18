@@ -3,13 +3,16 @@ import 'package:get/get.dart';
 import 'package:oyato_food/app/data/app_text_style.dart';
 import 'package:oyato_food/app/model/all_product_model.dart';
 import 'package:oyato_food/app/model/banner_model.dart';
+import 'package:oyato_food/app/model/best_selling_product.dart';
 import 'package:oyato_food/app/routes/app_pages.dart';
 import 'package:oyato_food/app/widgets/custom_carousel_slider.dart';
 
 class HomeWidget extends StatelessWidget {
   final List<AllProductData>? productData;
   final List<BannerModel>? bannerData;
-  const HomeWidget({super.key, required this.productData, required this.bannerData});
+  final List<BestSellingProduct>? bestData;
+  final List<BestSellingProduct>? mustHaveData;
+  const HomeWidget({super.key, required this.productData, required this.bannerData,required this.bestData, required this.mustHaveData});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,169 @@ class HomeWidget extends StatelessWidget {
               ),
 
               const SizedBox(height: 25),
+              /// Best Selling
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Best Selling Product", style: AppTextStyle.textStyle18BlackBold,),
+                    SizedBox(height: 10,),
+                    // Horizontal Product List
+                    Obx(() => SizedBox(
+                      height: 200,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: bestData!.length,
+                        itemBuilder: (context, index) {
+                          final product = bestData![index];
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 12),
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: 140,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 5,
+                                        offset: const Offset(0, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: const BorderRadius.vertical(
+                                            top: Radius.circular(12)),
+                                        child: Image.network(
+                                          product.image,
+                                          height: 120,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2),
+                                        child: Text(
+                                          product.title,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold, fontSize: 14),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                        const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                                        child: Text(
+                                          product.regularPrice,
+                                          style: const TextStyle(color: Colors.grey),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 10,),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    )),
 
+                    const SizedBox(height: 16),
+
+
+                  ],
+                ),
+              ),
+
+              //// Must Have
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Must Have Product", style: AppTextStyle.textStyle18BlackBold,),
+                    SizedBox(height: 10,),
+                    // Horizontal Product List
+                    Obx(() => SizedBox(
+                      height: 200,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: mustHaveData!.length,
+                        itemBuilder: (context, index) {
+                          final product = mustHaveData![index];
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 12),
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: 140,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 5,
+                                        offset: const Offset(0, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: const BorderRadius.vertical(
+                                            top: Radius.circular(12)),
+                                        child: Image.network(
+                                          product.image,
+                                          height: 120,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2),
+                                        child: Text(
+                                          product.title,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold, fontSize: 14),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                        const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                                        child: Text(
+                                          product.regularPrice,
+                                          style: const TextStyle(color: Colors.grey),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 10,),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    )),
+
+                    const SizedBox(height: 16),
+
+
+                  ],
+                ),
+              ),
               /// New Arrivals
               Text("New Arrival 🔥",
                   style: AppTextStyle.textStyle18BlackBold),
@@ -67,7 +232,7 @@ class HomeWidget extends StatelessWidget {
                                     topRight: Radius.circular(16)),
                                 child: Image.network(
                                   product.image ?? "",
-                                  height: 150,
+                                  height: 140,
                                   width: double.infinity,
                                   fit: BoxFit.cover,
                                 ),
@@ -107,7 +272,7 @@ class HomeWidget extends StatelessWidget {
                     ),
                   );
                 },
-              )
+              ),
             ],
           ),
         ),

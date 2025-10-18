@@ -1,13 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:oyato_food/app/api_service/api_provider.dart';
 import 'package:oyato_food/app/model/best_selling_product.dart';
 import 'package:oyato_food/app/model/category_model.dart';
-import 'package:oyato_food/app/model/single_product_model.dart';
-
 import '../../../api_service/api_repository.dart';
 import '../../../model/all_product_model.dart';
 import '../../../model/banner_model.dart';
@@ -33,6 +27,7 @@ class HomeController extends GetxController
   RxList<BannerModel> banners = <BannerModel>[].obs;
   RxList<Category> categories = <Category>[].obs;
   RxList<BestSellingProduct> bestSelling = <BestSellingProduct>[].obs;
+  RxList<BestSellingProduct> mustHave = <BestSellingProduct>[].obs;
 
   void fetchBanners() async {
     try {
@@ -82,8 +77,10 @@ class HomeController extends GetxController
   void fetchBestSelling() async {
     try {
       isLoading(true);
-      final data = await _repository.fetchBestSellingProducts();
-      bestSelling.value = data;
+      final bestSellingData = await _repository.fetchBestSellingProducts();
+      final mustHaveData = await _repository.fetchMustHaveProducts();
+      bestSelling.value = bestSellingData;
+      mustHave.value = mustHaveData;
       debugPrint("Data ${bestSelling[0].productID}");
     } catch (e) {
       errorMessage.value = e.toString();

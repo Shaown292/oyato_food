@@ -106,6 +106,20 @@ class ApiRepository {
       throw Exception(response["response"]["message"] ?? "Something went wrong");
     }
   }
+  Future<List<BestSellingProduct>> fetchMustHaveProducts() async {
+    final response = await _apiProvider.post("api/product.php", {
+      "get-product": "MustHaveProducts",
+      "gettoken": token
+    });
+
+    if (response["status"] == "success") {
+      final List related = response["data"];
+      debugPrint("API CALL OK");
+      return related.map((e) => BestSellingProduct.fromJson(e)).toList();
+    } else {
+      throw Exception(response["response"]["message"] ?? "Something went wrong");
+    }
+  }
   Future<List<CartItem>> fetchCartItems() async {
     final response = await _apiProvider.post("/api/order.php", {
       "order": "get-cart",

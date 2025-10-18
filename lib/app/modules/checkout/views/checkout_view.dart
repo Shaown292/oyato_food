@@ -28,12 +28,20 @@ class CheckoutView extends GetView<CheckoutController> {
                   itemCount: controller.cartController.cartItems.length,
                   itemBuilder: (context, index) {
                     final item = controller.cartController.cartItems[index];
-                    return ListTile(
-                      leading: Image.network(item.image, width: 60),
-                      title: Text(item.title),
-                      subtitle: Text('Quantity: ${item.quantity}'),
-                      trailing: Text(
-                        '\$${(item.price * item.quantity).toStringAsFixed(2)}',
+                    return Card(
+                      color: Colors.white.withOpacity(0.8),
+                      margin: EdgeInsets.all(10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      elevation: 2,
+                      child: ListTile(
+                        leading: Image.network(item.image, width: 60),
+                        title: Text(item.title),
+                        subtitle: Text('Quantity: ${item.quantity}'),
+                        trailing: Text(
+                          '\$${(item.price * item.quantity).toStringAsFixed(2)}',
+                        ),
                       ),
                     );
                   },

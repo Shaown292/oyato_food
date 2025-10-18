@@ -66,6 +66,8 @@ class HomeView extends GetView<HomeController> {
                 : HomeWidget(
                     productData: controller.allProductData,
                     bannerData: controller.banners,
+              bestData: controller.bestSelling,
+              mustHaveData: controller.mustHave,
                   );
           }),
           Obx(() {
