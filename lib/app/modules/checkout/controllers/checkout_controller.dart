@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:oyato_food/app/api_service/api_repository.dart';
 import 'package:oyato_food/app/data/app_colors.dart';
+import 'package:oyato_food/app/model/shop_location.dart';
 import 'package:oyato_food/app/modules/cart/controllers/cart_controller.dart';
 
 class CheckoutController extends GetxController {
   CartController cartController = Get.put(CartController());
+  final ApiRepository _repository = ApiRepository();
+
   var selectedDeliveryOption = "".obs;
   var selectedPaymentOption = "".obs;
   RxInt quantity = 1.obs;
@@ -13,17 +17,13 @@ class CheckoutController extends GetxController {
   RxString selectedAddress = ''.obs;
   RxString selectedProvince= ''.obs;
   RxString selectedCountry= ''.obs;
+  RxBool isLoading = false.obs;
+  RxString errorMessage = "".obs;
+  RxList<ShopLocation>  shopDetails = <ShopLocation>[].obs;
+  RxList<String>  shopLocation = <String>[].obs;
+  RxList<String> provinces = <String>[].obs;
 
-  final List<String> addressList = [
-    '3226 Weston Rd, Toronto, ON M9M 2T7, Canada',
-    '15 King St W, Toronto, ON M5H 1A1, Canada',
-    '500 Yonge St, Toronto, ON M4Y 1X9, Canada'
-  ];
-  final List<String> province = [
-    'British Columbia',
-    'Manitoba',
-    'Ontario'
-  ];
+
   final List<String> country = [
     'Canada',
     'USA',
@@ -39,6 +39,7 @@ class CheckoutController extends GetxController {
   final otherController = TextEditingController();
   final searchAddressController = TextEditingController();
 
+
   double get price => 19.99;
   double get total => price * quantity.value;
 
@@ -46,6 +47,34 @@ class CheckoutController extends GetxController {
   void decrement() {
     if (quantity.value > 1) quantity.value--;
   }
+
+  void fetchShopLocation() async {
+    try {
+      isLoading(true);
+      final data = await _repository.fetchShopLocation();
+      // convert to location names for dropdown
+      shopLocation.value = data.map((e) => e.location).toList();
+      shopDetails.value = data;
+    } catch (e) {
+      errorMessage.value = e.toString();
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  Future<void> fetchProvinces() async {
+    try {
+      isLoading(true);
+      errorMessage('');
+      final result = await _repository.fetchProvince();
+      provinces.value = result; // must return List<String>
+    } catch (e) {
+      errorMessage.value = e.toString();
+    } finally {
+      isLoading(false);
+    }
+  }
+
 
   @override
   void onClose() {
@@ -100,10 +129,12 @@ class CheckoutController extends GetxController {
   void onInit() {
     cartController;
     // TODO: implement onInit
+    fetchShopLocation();
+    fetchProvinces();
     super.onInit();
-    selectedAddress.value = addressList.first;
-    selectedProvince.value = province.first;
-    selectedCountry.value = country.first;
+    // selectedAddress.value = addressList.first;
+    // selectedProvince.value = province.first;
+    // selectedCountry.value = country.first;
   }
 
 

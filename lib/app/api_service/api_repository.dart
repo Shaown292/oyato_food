@@ -1,10 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
 import 'package:oyato_food/app/model/all_product_model.dart';
 import 'package:oyato_food/app/model/best_selling_product.dart';
 import 'package:oyato_food/app/model/cart_model.dart';
 import 'package:oyato_food/app/model/category_model.dart';
+import 'package:oyato_food/app/model/currated_category_model.dart';
+import 'package:oyato_food/app/model/shop_location.dart';
 import 'package:oyato_food/app/model/single_product_model.dart';
 import '../global_controller/global_controller.dart';
 import '../model/banner_model.dart';
@@ -92,6 +95,24 @@ class ApiRepository {
       throw Exception(response["response"]["message"] ?? "Something went wrong");
     }
   }
+  Future<List<Product>> searchProducts({required String keyword,required String categoryId, required String brand}) async {
+    final response = await _apiProvider.post("/api/product.php", {
+      "get-product": "search",
+      "searchInput": keyword,
+      "searchCategory": categoryId,
+      "searchBrand": brand,
+      "limit":"20",
+      "page":"0",
+      "gettoken": token
+    });
+
+    if (response["status"] == "success") {
+      final List products = response["data"];
+      return products.map((e) => Product.fromJson(e)).toList();
+    } else {
+      throw Exception(response["response"]["message"] ?? "Something went wrong");
+    }
+  }
   Future<List<RelatedProduct>> fetchRelatedProducts({required String productId}) async {
     final response = await _apiProvider.post("api/product.php", {
       "get-product": "related",
@@ -165,6 +186,36 @@ class ApiRepository {
       throw Exception(response["response"]["message"] ?? "Something went wrong");
     }
   }
+  Future<List<ShopLocation>> fetchShopLocation() async {
+    final response = await _apiProvider.post("/api/shop-address.php", {
+      "shop-address": "get",
+      "gettoken": token
+    });
+
+    if (response["status"] == "success") {
+      final List cart = response["response"]["data"];
+      debugPrint("API CALL OK");
+
+      return cart.map((e) => ShopLocation.fromJson(e)).toList();
+    } else {
+      throw Exception(response["response"]["message"] ?? "Something went wrong");
+    }
+  }
+  Future<List<String>> fetchProvince() async {
+    final response = await _apiProvider.post("api/address.php", {
+      "get": "ProvinceState",
+      "gettoken": token
+    });
+
+      if (response['status'] == 'success') {
+        print(response['response']['Data']);
+        return List<String>.from(response['response']['Data']);
+
+      } else {
+        throw Exception('Failed to load provinces');
+      }
+
+  }
   Future<void> addToCart({required String productId}) async {
     print("API 1 ${globalController.userId} ${productId.runtimeType} $token");
     final response = await _apiProvider.post("/api/order.php", {
@@ -227,6 +278,27 @@ class ApiRepository {
       throw Exception(response["response"]["message"] ?? "Something went wrong");
     }
   }
+  Future<List<CurratedCategoryModel>> fetchCurratedProduct() async {
+    final response = await _apiProvider.post("api/inventory.php", {
+      "inventory": "CurratedProducts",
+      "Cetagorylimit": "6",
+      "Productlimit": "12",
+      "gettoken": token
+    }
+
+    );
+    if (response["status"] == "success") {
+      final List related = response["data"];
+      debugPrint("API CALL OK");
+      return related.map((e) => CurratedCategoryModel.fromJson(e)).toList();
+    } else {
+
+
+      throw Exception(response["response"]["message"] ?? "Something went wrong");
+    }
+  }
+
+
 
 
 }

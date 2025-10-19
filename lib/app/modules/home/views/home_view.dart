@@ -68,7 +68,7 @@ class HomeView extends GetView<HomeController> {
                     bannerData: controller.banners,
               bestData: controller.bestSelling,
               mustHaveData: controller.mustHave,
-              popularProductData: controller.popularProduct,
+              popularCategoryData: controller.popularProduct,
                   );
           }),
           Obx(() {

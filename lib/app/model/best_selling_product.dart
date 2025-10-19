@@ -2,6 +2,7 @@ class BestSellingProduct {
   final String productID;
   final String title;
   final String categoryName;
+  final String categoryId;
   final String shortDescription;
   final String description;
   final String image;
@@ -19,6 +20,7 @@ class BestSellingProduct {
     required this.productID,
     required this.title,
     required this.categoryName,
+    required this.categoryId,
     required this.shortDescription,
     required this.description,
     required this.image,
@@ -49,7 +51,7 @@ class BestSellingProduct {
       stockLimit: json['StockLimit'] ?? "",
       size: json['Size'] ?? "",
       inventory: json['Inventory'] ?? {},
-      type: json['type'] ?? "",
+      type: json['type'] ?? "", categoryId: json['CategoryID'] ?? "",
 
     );
   }

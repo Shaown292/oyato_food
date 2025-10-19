@@ -15,6 +15,9 @@ abstract class Routes {
   static const CATEGORY_PRODUCT = _Paths.CATEGORY_PRODUCT;
   static const CHECKOUT = _Paths.CHECKOUT;
   static const DISCOUNT = _Paths.DISCOUNT;
+  static const SEARCH = _Paths.SEARCH;
+  static const CURRATED_CATEGORY = _Paths.CURRATED_CATEGORY;
+  static const PAYMENT = _Paths.PAYMENT;
 }
 
 abstract class _Paths {
@@ -31,4 +34,7 @@ abstract class _Paths {
   static const CATEGORY_PRODUCT = '/category-product';
   static const CHECKOUT = '/checkout';
   static const DISCOUNT = '/discount';
+  static const SEARCH = '/search';
+  static const CURRATED_CATEGORY = '/currated-category';
+  static const PAYMENT = '/payment';
 }

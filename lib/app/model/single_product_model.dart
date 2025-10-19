@@ -35,6 +35,7 @@ class Inventory {
 
 class Product {
   final String productID;
+  final String id;
   final String title;
   final String shortDescription;
   final String description;
@@ -53,6 +54,7 @@ class Product {
 
   Product({
     required this.productID,
+    required this.id,
     required this.title,
     required this.shortDescription,
     required this.description,
@@ -71,6 +73,7 @@ class Product {
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
       productID: json['ProductID'] ?? "",
+      id: json['id'] ?? "",
       title: json['Title'] ?? "",
       shortDescription: json['Short_Description'] ?? "",
       description: json['Description'] ?? "",
@@ -93,6 +96,7 @@ class Product {
   Map<String, dynamic> toJson() {
     return {
       'ProductID': productID,
+      'id': id,
       'Title': title,
       'Short_Description': shortDescription,
       'Description': description,

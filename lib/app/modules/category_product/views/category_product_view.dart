@@ -10,8 +10,6 @@ class CategoryProductView extends GetView<CategoryProductController> {
   @override
   Widget build(BuildContext context) {
     final products = Get.arguments;
-    print(products);
-    print(products.length);
     return Scaffold(
       appBar: AppBar(
         title: const Text('CategoryProductView'),
