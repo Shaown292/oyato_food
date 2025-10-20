@@ -4,6 +4,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:oyato_food/app/data/app_colors.dart';
 import 'package:oyato_food/app/data/app_text_style.dart';
+import 'package:oyato_food/app/modules/payment/views/payment_view.dart';
+import 'package:oyato_food/app/payment_gateway/moneris_webview.dart';
+import 'package:oyato_food/app/routes/app_pages.dart';
 import 'package:oyato_food/app/widgets/custom_text_field.dart';
 import 'package:oyato_food/app/widgets/primary_button.dart';
 
@@ -411,7 +414,9 @@ class CheckoutView extends GetView<CheckoutController> {
                 ),
               ),
               SizedBox(height: 20),
-              PrimaryButton(title: "Order Now", onTap: () {}),
+              PrimaryButton(title: "Order Now", onTap: () {
+                Get.to(() => MonerisWebView());
+              }),
               SizedBox(height: 40),
             ],
           ),
