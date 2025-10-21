@@ -140,7 +140,9 @@ class LogInView extends GetView<LogInController> {
                     "Sign In with Google",
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    controller.signInWithGoogle();
+                  },
                 ),
               ),
               const SizedBox(height: 15),

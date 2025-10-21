@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "913733924863",
+    "project_id": "oyatofood-6929b",
+    "storage_bucket": "oyatofood-6929b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:913733924863:android:97f28cb5320a9ac28799ca",
+        "android_client_info": {
+          "package_name": "com.kzshaown.oyato_food"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "913733924863-j5t8cq4a9ln4cl783ro67b9r6ia32gm9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kzshaown.oyato_food",
+            "certificate_hash": "b19c4d424e7e51cefe307e79f7e796b6b4e0846d"
+          }
+        },
+        {
+          "client_id": "913733924863-51j47vp8jmo43bhku8ve1geb7ouosfis.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9RnFEg3kkwPrk2RycAB_V6QtUOjQuutI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "913733924863-51j47vp8jmo43bhku8ve1geb7ouosfis.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
