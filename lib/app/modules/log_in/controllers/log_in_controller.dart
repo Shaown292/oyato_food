@@ -292,7 +292,7 @@ class LogInController extends GetxController {
       final User? user = userCredential.user;
       if (user != null) {
         debugPrint("Firebase Login Success: ${user.email}");
-        await _loginWithFirebaseToAPI(user);
+        await _loginWithFirebaseToAPI(user,googleUser);
       }
 
       return userCredential;
@@ -306,16 +306,26 @@ class LogInController extends GetxController {
   // =========================
   // SEND FIREBASE USER TO BACKEND
   // =========================
-  Future<void> _loginWithFirebaseToAPI(User user) async {
+  Future<void> _loginWithFirebaseToAPI(User user,GoogleSignInAccount googleUser) async {
     try {
-      final idToken = await user.getIdToken();
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      final accessToken = googleAuth.accessToken;
+      final idToken = googleAuth.idToken;
+
+      if (accessToken == null) {
+        Get.snackbar("Error", "Access token is null");
+        return;
+      }
+
+      print("Google Access Token: $accessToken");
 
       final response = await http.post(
         Uri.parse("${_apiProvider.baseUrl}/api/user-auth.php"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
           "login-user": "true",
-          "accesstoken": idToken,
+          "accesstoken": accessToken,
           "signin-type": "200", // Firebase login type
           "account-type": "1",
           "gettoken": "0123456789"
@@ -324,6 +334,11 @@ class LogInController extends GetxController {
 
       final data = jsonDecode(response.body);
       status.value = data["status"] ?? "";
+
+      print("Api Hit");
+      print("hsjadjasd: ${response}");
+      print("Response: ${response.statusCode}");
+      print("Body: ${response.body}");
 
       if (response.statusCode == 200 && status.value == "success") {
         final userId = data["response"]["userid"];
