@@ -13,6 +13,11 @@ class AppTextStyle {
     fontSize: 16,
     fontWeight: FontWeight.w500,
   );
+  static final textStyle18WhiteW500 = GoogleFonts.inter(
+    color: Colors.white,
+    fontSize: 18,
+    fontWeight: FontWeight.w600,
+  );
   static final textStyle16GreenW500 = GoogleFonts.inter(
     color: AppColors.primaryColor,
     fontSize: 16,

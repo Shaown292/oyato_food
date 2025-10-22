@@ -17,6 +17,7 @@ class DetailPageController extends GetxController {
   RxList<Product> products = <Product>[].obs;
   RxList<RelatedProduct> relatedProducts = <RelatedProduct>[].obs;
   RxString errorMessage = "".obs;
+  RxBool isSelected = false.obs;
   // final cartController = Get.put(CartController());
   // final DashboardController dashboardController = Get.find(DashboardController());
 
@@ -54,6 +55,36 @@ class DetailPageController extends GetxController {
       isLoading(true);
       errorMessage("");
       await _repository.addToCart(productId: productId.value);
+      // relatedProducts.assignAll(data);
+    } catch (e) {
+      // print("working 2");
+      errorMessage(e.toString());
+    } finally {
+      // print("working 3");
+      isLoading(false);
+    }
+  }
+  void addToWishlist() async {
+    try {
+
+      isLoading(true);
+      errorMessage("");
+      await _repository.addToWishlist(productId: productId.value);
+      // relatedProducts.assignAll(data);
+    } catch (e) {
+      // print("working 2");
+      errorMessage(e.toString());
+    } finally {
+      // print("working 3");
+      isLoading(false);
+    }
+  }
+  void deleteFromWishlist() async {
+    try {
+
+      isLoading(true);
+      errorMessage("");
+      await _repository.deleteFromWishlist(productId: productId.value);
       // relatedProducts.assignAll(data);
     } catch (e) {
       // print("working 2");

@@ -9,6 +9,7 @@ import 'package:oyato_food/app/model/category_model.dart';
 import 'package:oyato_food/app/model/currated_category_model.dart';
 import 'package:oyato_food/app/model/shop_location.dart';
 import 'package:oyato_food/app/model/single_product_model.dart';
+import 'package:oyato_food/app/model/wishlist_item.dart';
 import '../global_controller/global_controller.dart';
 import '../model/banner_model.dart';
 import '../model/related_product.dart';
@@ -278,6 +279,42 @@ class ApiRepository {
       throw Exception(response["response"]["message"] ?? "Something went wrong");
     }
   }
+  Future<void> addToWishlist({required String productId}) async {
+    final response = await _apiProvider.post("/api/wishlist.php", {
+      "wishlist": "add",
+      "userid": globalController.userId.value,
+      "ProductID" : productId,
+      "gettoken": token
+    });
+    // print("API Call");
+    if (response["status"] == "success") {
+
+      Get.snackbar("Bravo", response["response"]["message"]);
+
+    } else {
+      print(globalController.userId.value);
+      Get.snackbar("Added", response["response"]["message"]);
+      throw Exception(response["response"]["message"] ?? "Something went wrong");
+    }
+  }
+  Future<void> deleteFromWishlist({required String productId}) async {
+    final response = await _apiProvider.post("/api/wishlist.php", {
+      "wishlist": "delete",
+      "userid": globalController.userId.value,
+      "id" : productId,
+      "gettoken": token
+    });
+    // print("API Call");
+    if (response["status"] == "success") {
+
+      Get.snackbar("Sorry", response["response"]["message"]);
+
+    } else {
+      print("API Call");
+      Get.snackbar("Added", response["response"]["message"]);
+      throw Exception(response["response"]["message"] ?? "Something went wrong");
+    }
+  }
   Future<List<CurratedCategoryModel>> fetchCurratedProduct() async {
     final response = await _apiProvider.post("api/inventory.php", {
       "inventory": "CurratedProducts",
@@ -291,6 +328,24 @@ class ApiRepository {
       final List related = response["data"];
       debugPrint("API CALL OK");
       return related.map((e) => CurratedCategoryModel.fromJson(e)).toList();
+    } else {
+
+
+      throw Exception(response["response"]["message"] ?? "Something went wrong");
+    }
+  }
+  Future<List<WishlistItem>> fetchWishlistItem() async {
+    final response = await _apiProvider.post("/api/wishlist.php", {
+      "wishlist": "get",
+      "userid": globalController.userId.value,
+      "gettoken": token
+    }
+
+    );
+    if (response["status"] == "success") {
+      final List related = response["response"]["data"];
+      debugPrint("Wish List API ${globalController.userId.value}");
+      return related.map((e) => WishlistItem.fromJson(e)).toList();
     } else {
 
 

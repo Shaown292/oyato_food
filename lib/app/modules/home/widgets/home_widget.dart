@@ -393,8 +393,6 @@ class HomeWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Stack(
-                            children: [
                               ClipRRect(
                                 borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(16),
@@ -407,19 +405,6 @@ class HomeWidget extends StatelessWidget {
                                   fit: BoxFit.cover,
                                 ),
                               ),
-                              Positioned(
-                                top: 10,
-                                right: 10,
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  child: Icon(
-                                    Icons.favorite_border,
-                                    color: Colors.grey.shade600,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(

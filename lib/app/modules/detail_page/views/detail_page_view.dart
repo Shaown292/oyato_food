@@ -101,7 +101,21 @@ class DetailPageView extends GetView<DetailPageController> {
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-
+                                     InkWell(
+                                       onTap: (){
+                                         controller.isSelected.value = !controller.isSelected.value;
+                                         controller.isSelected.value ? controller.addToWishlist(): controller.deleteFromWishlist();
+                                         print( controller.isSelected.value);
+                                       },
+                                       child: Container(
+                                         padding: EdgeInsets.all(5),
+                                         decoration: BoxDecoration(
+                                           shape: BoxShape.circle,
+                                           color: Colors.white
+                                         ),
+                                         child:  controller.isSelected.value ?FaIcon(FontAwesomeIcons.solidHeart, color: Colors.red,) : FaIcon(FontAwesomeIcons.heart, color: AppColors.primaryColor,)
+                                       ),
+                                     )
                                     ],
                                   ),
 

@@ -10,7 +10,7 @@ class SplashScreenView extends GetView<SplashScreenController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: Colors.white,
       body: Center(
         child: AnimatedText(),
       ),
@@ -34,7 +34,7 @@ class _AnimatedTextState extends State<AnimatedText>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 2),
     )..forward();
 
     _opacityAnimation = Tween<double>(begin: 0, end: 3).animate(
@@ -64,10 +64,13 @@ class _AnimatedTextState extends State<AnimatedText>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              "Oyato Foods",
-              style: AppTextStyle.textStyle26SecondaryW500,
-            ),
+           Container(
+             height: 200,
+             width: 300,
+             decoration: BoxDecoration(
+               image: DecorationImage(image: AssetImage("assets/images/logo.jpeg"))
+             ),
+           )
           ],
         ),
       ),

@@ -1,32 +1,34 @@
 import 'package:get/get.dart';
+import 'package:oyato_food/app/model/wishlist_item.dart';
+
+import '../../../api_service/api_repository.dart';
 
 class FavoriteController extends GetxController {
+  RxBool isLoading = false.obs;
+  RxString errorMessage = "".obs;
+  final ApiRepository _repository = ApiRepository();
+  RxList<WishlistItem> wishList = <WishlistItem>[].obs;
 
-  final List<String> imageUrls = [
-    "https://picsum.photos/id/237/800/400",  // Random dog
-    "https://picsum.photos/id/1015/800/400", // Mountain landscape
-    "https://picsum.photos/id/1025/800/400", // Puppy
-    "https://picsum.photos/id/1003/800/400", // River
-    "https://picsum.photos/id/1018/800/400", // Forest road
-  ];
 
-  //TODO: Implement FavoriteController
+  void fetchWishlistItems() async {
+    try {
+      isLoading(true);
+      errorMessage("");
+      final data = await _repository.fetchWishlistItem();
 
-  final count = 0.obs;
+      wishList.assignAll(data);
+
+    } catch (e) {
+      errorMessage(e.toString());
+    } finally {
+      isLoading(false);
+    }
+  }
+
   @override
   void onInit() {
+    fetchWishlistItems();
+    // TODO: implement onInit
     super.onInit();
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }
