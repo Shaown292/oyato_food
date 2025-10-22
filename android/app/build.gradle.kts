@@ -17,6 +17,11 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
 
 
+    implementation("com.google.firebase:firebase-auth")
+
+    // 👇 Add this for Google Sign-In support
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
+
     // Add the dependencies for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
 }

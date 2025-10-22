@@ -163,7 +163,8 @@ class LogInView extends GetView<LogInController> {
                     "Sign In with Facebook",
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                  },
                 ),
               ),
               SizedBox(height: 40,),
