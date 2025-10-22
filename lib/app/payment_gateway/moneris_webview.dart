@@ -53,7 +53,7 @@ class _MonerisWebViewState extends State<MonerisWebView> {
           },
         ),
       )
-      ..loadRequest(Uri.parse('https://www3.moneris.com/mpg/'));
+      ..loadRequest(Uri.parse('https://www.moneris.com'));
   }
 
   @override
