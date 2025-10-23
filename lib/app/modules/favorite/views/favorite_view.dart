@@ -87,14 +87,20 @@ class FavoriteView extends GetView<FavoriteController> {
                                 },
                               ),
                             ),
-                            Positioned(
-                              top: 10,
-                              right: 10,
-                              child: CircleAvatar(
-                                backgroundColor: Colors.white,
-                                child: FaIcon(
-                                  FontAwesomeIcons.solidHeart,
-                                  color: Colors.red,
+                            InkWell(
+                              onTap:(){
+                                controller.deleteFromWishlist(productId: product.productId);
+                                controller.fetchWishlistItems();
+                              },
+                              child: Positioned(
+                                top: 10,
+                                right: 10,
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  child: FaIcon(
+                                    FontAwesomeIcons.solidHeart,
+                                    color: Colors.red,
+                                  ),
                                 ),
                               ),
                             ),
