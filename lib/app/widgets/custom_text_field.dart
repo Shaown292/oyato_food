@@ -51,45 +51,43 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return TextFormField(
       onTap: onTap,
-      child: TextFormField(
-        style: textStyle ?? AppTextStyle.textStyle14GreyW500,
-        controller: controller,
-        obscureText: obsCureText,
-        keyboardType: textInputType,
-        minLines: minLine ?? 1,
-        maxLines: maxLine ?? 1,
-        readOnly: readOnly,
-        decoration: InputDecoration(
-            filled: true,
-            border: inputBorder,
-            fillColor: fillColor ?? const Color(0xFFFDFBFF),
-            hintText: hintText ?? 'Enter text',
-            hintStyle: hintTextStyle ?? AppTextStyle.textStyle14GreyW500 ,
-            prefixIcon: prefixIcon,
-            prefix: prefix,
-            suffixIcon: InkWell(
-                onTap: iconOnTap, child: suffixIcon ?? const SizedBox()),
-            focusedBorder: focusBorderActive
-                ? OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.primaryColor.withOpacity(0.4),
-              ),
-              borderRadius: BorderRadius.circular(8.0),
-            )
-                : null,
-            enabledBorder: enableBorderActive
-                ? OutlineInputBorder(
-              borderSide: BorderSide(
-                color: enableBorderActiveColor ??
-                     AppColors.primaryColor.withOpacity(0.4),
-              ),
-              borderRadius: BorderRadius.circular(8.0),
-            )
-                : null,
-            contentPadding: contentPadding),
-      ),
+      style: textStyle ?? AppTextStyle.textStyle14GreyW500,
+      controller: controller,
+      obscureText: obsCureText,
+      keyboardType: textInputType,
+      minLines: minLine ?? 1,
+      maxLines: maxLine ?? 1,
+      readOnly: readOnly,
+      decoration: InputDecoration(
+          filled: true,
+          border: inputBorder,
+          fillColor: fillColor ?? const Color(0xFFFDFBFF),
+          hintText: hintText ?? 'Enter text',
+          hintStyle: hintTextStyle ?? AppTextStyle.textStyle14GreyW500 ,
+          prefixIcon: prefixIcon,
+          prefix: prefix,
+          suffixIcon: InkWell(
+              onTap: iconOnTap, child: suffixIcon ?? const SizedBox()),
+          focusedBorder: focusBorderActive
+              ? OutlineInputBorder(
+            borderSide: BorderSide(
+              color: AppColors.primaryColor.withOpacity(0.4),
+            ),
+            borderRadius: BorderRadius.circular(8.0),
+          )
+              : null,
+          enabledBorder: enableBorderActive
+              ? OutlineInputBorder(
+            borderSide: BorderSide(
+              color: enableBorderActiveColor ??
+                   AppColors.primaryColor.withOpacity(0.4),
+            ),
+            borderRadius: BorderRadius.circular(8.0),
+          )
+              : null,
+          contentPadding: contentPadding),
     );
   }
 }

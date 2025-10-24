@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:oyato_food/app/data/app_colors.dart';
 import 'package:oyato_food/app/data/app_text_style.dart';
+import 'package:oyato_food/app/google_map/google_map.dart';
 import 'package:oyato_food/app/modules/payment/views/payment_view.dart';
 import 'package:oyato_food/app/payment_gateway/moneris_webview.dart';
 import 'package:oyato_food/app/routes/app_pages.dart';
@@ -189,6 +190,21 @@ class CheckoutView extends GetView<CheckoutController> {
               ),
               SizedBox(height: 10),
               CustomTextFormField(
+                onTap: () async{
+                  var result = await  Get.to(()=> MapSearchScreen());
+                  // Access the returned data
+                  if (result != null) {
+                    controller.latitude.value = result['lat'];
+                    controller.longitude.value = result['lon'];
+                    controller.location.value = result['location'];
+                    controller.searchAddressController.text = controller.location.value;
+                    print("LAt: ${controller.latitude.value}");
+                    print("Lon: ${controller.longitude.value}");
+                    print("Address: ${controller.location.value}");
+                    // print(controller.searchAddressController.text);
+                  }
+                },
+                readOnly: true,
                 controller: controller.searchAddressController,
                 prefixIcon: Icon(
                   Icons.search,

@@ -10,11 +10,15 @@ class CheckoutController extends GetxController {
   CartController cartController = Get.put(CartController());
   final ApiRepository _repository = ApiRepository();
 
+
   var selectedDeliveryOption = "".obs;
   var selectedPaymentOption = "".obs;
   RxInt quantity = 1.obs;
   RxString deliveryOption = 'Home Delivery'.obs;
   RxString selectedAddress = ''.obs;
+  RxString latitude = ''.obs;
+  RxString longitude = ''.obs;
+  RxString location = ''.obs;
   RxString selectedProvince= ''.obs;
   RxString selectedCountry= ''.obs;
   RxBool isLoading = false.obs;

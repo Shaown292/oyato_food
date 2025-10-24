@@ -14,8 +14,6 @@ import 'app/routes/app_pages.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
-
   // Set platform implementation
   if (WebViewPlatform.instance == null) {
     if (defaultTargetPlatform == TargetPlatform.android) {
