@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:oyato_food/app/api_service/api_repository.dart';
 import 'package:oyato_food/app/data/app_colors.dart';
 import 'package:oyato_food/app/model/shop_location.dart';
+import 'package:oyato_food/app/model/site_config.dart';
 import 'package:oyato_food/app/modules/cart/controllers/cart_controller.dart';
 
 class CheckoutController extends GetxController {
@@ -26,6 +27,7 @@ class CheckoutController extends GetxController {
   RxList<ShopLocation>  shopDetails = <ShopLocation>[].obs;
   RxList<String>  shopLocation = <String>[].obs;
   RxList<String> provinces = <String>[].obs;
+  final site = Rxn<SiteConfig>();
 
 
   final List<String> country = [
@@ -59,7 +61,23 @@ class CheckoutController extends GetxController {
       // convert to location names for dropdown
       shopLocation.value = data.map((e) => e.location).toList();
       shopDetails.value = data;
+      print("Location calling");
     } catch (e) {
+      errorMessage.value = e.toString();
+    } finally {
+      isLoading(false);
+    }
+  }
+  void fetchSiteConfig() async {
+    try {
+      isLoading(true);
+      print("Fetching site config...");
+      final configData = await _repository.fetchSiteConfig();
+      site.value = configData;
+      print("Site title: ${site.value?.siteTitle}");
+    } catch (e, s) {
+      print("❌ Error fetching site config: $e");
+      print(s);
       errorMessage.value = e.toString();
     } finally {
       isLoading(false);
@@ -72,6 +90,7 @@ class CheckoutController extends GetxController {
       errorMessage('');
       final result = await _repository.fetchProvince();
       provinces.value = result; // must return List<String>
+      print("Province calling");
     } catch (e) {
       errorMessage.value = e.toString();
     } finally {
@@ -135,10 +154,10 @@ class CheckoutController extends GetxController {
     // TODO: implement onInit
     fetchShopLocation();
     fetchProvinces();
+    fetchSiteConfig();
+    print("on init working");
     super.onInit();
-    // selectedAddress.value = addressList.first;
-    // selectedProvince.value = province.first;
-    // selectedCountry.value = country.first;
+
   }
 
 

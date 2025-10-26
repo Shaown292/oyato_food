@@ -9,6 +9,7 @@ import 'package:oyato_food/app/model/category_model.dart';
 import 'package:oyato_food/app/model/currated_category_model.dart';
 import 'package:oyato_food/app/model/shop_location.dart';
 import 'package:oyato_food/app/model/single_product_model.dart';
+import 'package:oyato_food/app/model/site_config.dart';
 import 'package:oyato_food/app/model/wishlist_item.dart';
 import '../global_controller/global_controller.dart';
 import '../model/banner_model.dart';
@@ -346,6 +347,23 @@ class ApiRepository {
       final List related = response["response"]["data"];
       debugPrint("Wish List API ${globalController.userId.value}");
       return related.map((e) => WishlistItem.fromJson(e)).toList();
+    } else {
+
+
+      throw Exception(response["response"]["message"] ?? "Something went wrong");
+    }
+  }
+  Future<SiteConfig> fetchSiteConfig() async {
+    final response = await _apiProvider.post("api/details.php", {
+      "get": "site-details",
+      "gettoken": token
+    }
+
+    );
+    if (response["status"] == "success") {
+      final  related = response["response"]["Data"];
+      return  SiteConfig.fromJson(related);
+
     } else {
 
 

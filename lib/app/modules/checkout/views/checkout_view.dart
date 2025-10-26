@@ -198,9 +198,7 @@ class CheckoutView extends GetView<CheckoutController> {
                     controller.longitude.value = result['lon'];
                     controller.location.value = result['location'];
                     controller.searchAddressController.text = controller.location.value;
-                    print("LAt: ${controller.latitude.value}");
-                    print("Lon: ${controller.longitude.value}");
-                    print("Address: ${controller.location.value}");
+
                     // print(controller.searchAddressController.text);
                   }
                 },
@@ -431,7 +429,10 @@ class CheckoutView extends GetView<CheckoutController> {
               ),
               SizedBox(height: 20),
               PrimaryButton(title: "Order Now", onTap: () {
-                Get.to(() => MonerisWebView());
+                print("Hshdkajs : ${controller.site.value!.payCard!.checkoutId}     ${controller.site.value!.payCard!.environmentUrl}");
+                Get.to(() => MonerisCheckoutPage(checkoutId: controller.site.value!.payCard!.checkoutId.toString(), environment: controller.site.value!.payCard!.environmentUrl.toString(),
+                ));
+
               }),
               SizedBox(height: 40),
             ],
