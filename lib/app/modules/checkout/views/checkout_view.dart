@@ -6,6 +6,7 @@ import 'package:oyato_food/app/data/app_colors.dart';
 import 'package:oyato_food/app/data/app_text_style.dart';
 import 'package:oyato_food/app/google_map/google_map.dart';
 import 'package:oyato_food/app/modules/payment/views/payment_view.dart';
+import 'package:oyato_food/app/payment_gateway/moneris_preload.dart';
 import 'package:oyato_food/app/payment_gateway/moneris_webview.dart';
 import 'package:oyato_food/app/routes/app_pages.dart';
 import 'package:oyato_food/app/widgets/custom_text_field.dart';
@@ -430,8 +431,7 @@ class CheckoutView extends GetView<CheckoutController> {
               SizedBox(height: 20),
               PrimaryButton(title: "Order Now", onTap: () {
                 print("Hshdkajs : ${controller.site.value!.payCard!.checkoutId}     ${controller.site.value!.payCard!.environmentUrl}");
-                Get.to(() => MonerisCheckoutPage(checkoutId: controller.site.value!.payCard!.checkoutId.toString(), environment: controller.site.value!.payCard!.environmentUrl.toString(),
-                ));
+                Get.to(() => MonerisPreloadPage());
 
               }),
               SizedBox(height: 40),

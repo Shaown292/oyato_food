@@ -316,6 +316,27 @@ class ApiRepository {
       throw Exception(response["response"]["message"] ?? "Something went wrong");
     }
   }
+  Future<void> cardPay({required String amount, required String ticket}) async {
+    final response = await _apiProvider.post("/api/order.php", {
+      "order": "bill-pay",
+      "userid": globalController.userId,
+      "method": "2",
+      "pay-card":"true",
+      "pay-amount" : amount,
+      "ticketNumber" : ticket,
+      "gettoken": token
+    });
+    // print("API Call");
+    if (response["status"] == "success") {
+
+      Get.snackbar("Sorry", response["response"]["message"]);
+
+    } else {
+      print("API Call");
+      Get.snackbar("Added", response["response"]["message"]);
+      throw Exception(response["response"]["message"] ?? "Something went wrong");
+    }
+  }
   Future<List<CurratedCategoryModel>> fetchCurratedProduct() async {
     final response = await _apiProvider.post("api/inventory.php", {
       "inventory": "CurratedProducts",

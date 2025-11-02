@@ -1,11 +1,17 @@
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:oyato_food/app/api_service/api_repository.dart';
 import 'dart:convert';
+
+import 'package:oyato_food/app/global_controller/global_controller.dart';
 
 class PaymentController extends GetxController {
   var isLoading = false.obs;
   var ticketNumber = "".obs;
   var paymentResponse = {}.obs;
+  RxString errorMessage = "".obs;
+  final ApiRepository _repository = ApiRepository();
+
 
   // Hosted payment URL
   String paymentUrl = "https://www.moneris.com/";
@@ -49,4 +55,20 @@ class PaymentController extends GetxController {
       isLoading.value = false;
     }
   }
+
+  Future<bool> cardPayment({required String amount, required String ticket}) async {
+    try {
+      isLoading(true);
+      errorMessage('');
+      final card = await _repository.cardPay(amount: amount, ticket: ticket);
+      print("CardPayment Called");
+      return true;
+    } catch (e) {
+      errorMessage.value = e.toString();
+      return false;
+    } finally {
+      isLoading(false);
+    }
+  }
+
 }

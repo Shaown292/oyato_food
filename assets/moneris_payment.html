@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://gatewayt.moneris.com/chkt/js/chkt_v1.00.js"></script>
+</head>
+
+<body style="padding:20px;">
+<input id="amounttk" type="text" placeholder="Enter amount">
+<button onclick="startPay()">Pay Now</button>
+
+<div id="monerisCheckout"></div>
+
+<script>
+    function startPay() {
+      const amount = document.getElementById("amounttk").value;
+
+      // callbacks
+      function pageLoad(){ console.log("Loaded"); }
+      function cancel(){ console.log("Canceled"); }
+      function error(err){ console.log(err); }
+      function receipt(r){ window.flutter_inappwebview.callHandler("paymentSuccess", r); }
+      function complete(r){ console.log(r); }
+
+      const chk = new monerisCheckout();
+      chk.setMode("qa");
+      chk.setCheckoutDiv("monerisCheckout");
+
+      chk.setCallback("page_loaded", pageLoad);
+      chk.setCallback("cancel_transaction", cancel);
+      chk.setCallback("error_event", error);
+      chk.setCallback("payment_receipt", receipt);
+      chk.setCallback("payment_complete", complete);
+
+      fetch("https://yourserver.com/preload.php", {
+        method: "POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({amount:amount})
+      })
+      .then(r=>r.json())
+      .then(d=>{ chk.startCheckout(d.response.ticket); })
+    }
+</script>
+</body>
+</html>
