@@ -62,7 +62,7 @@ class _MonerisPreloadPageState extends State<MonerisPreloadPage> {
         if (decoded["response"]?["ticket"] != null) {
           final ticket = decoded["response"]["ticket"];
           debugPrint("✅ Ticket: $ticket");
-          Get.to(()=> MonerisCheckoutPage(ticket: ticket, total: "30"));
+          Get.to(()=> MonerisCheckoutPage(checkoutId: ticket, total: "30"));
           // এখন তুমি চাইলে এই ticket দিয়ে Moneris Checkout WebView খুলে দিতে পারো।
         } else {
           debugPrint("⚠️ No ticket in response");

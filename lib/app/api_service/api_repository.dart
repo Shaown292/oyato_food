@@ -317,6 +317,7 @@ class ApiRepository {
     }
   }
   Future<void> cardPay({required String amount, required String ticket}) async {
+    print("Entering2");
     final response = await _apiProvider.post("/api/order.php", {
       "order": "bill-pay",
       "userid": globalController.userId,
@@ -326,9 +327,9 @@ class ApiRepository {
       "ticketNumber" : ticket,
       "gettoken": token
     });
-    // print("API Call");
-    if (response["status"] == "success") {
 
+    print("My token tik: $ticket");
+    if (response["status"] == "success") {
       Get.snackbar("Sorry", response["response"]["message"]);
 
     } else {

@@ -30,7 +30,7 @@ class _PaymentViewState extends State<PaymentView> {
               String? token = uri.queryParameters['token'];
               if (token != null) {
                 Get.back(); // Close WebView
-                controller.onPaymentCompleted(token);
+                // controller.onPaymentCompleted(token);
               }
               return NavigationDecision.prevent;
             }
@@ -42,10 +42,10 @@ class _PaymentViewState extends State<PaymentView> {
 
   void openWebView() {
     webController.loadRequest(Uri.parse(controller.paymentUrl));
-    Get.to(() => WebViewScreen(
-      url: controller.paymentUrl,
-      onPaymentCompleted: (token) => controller.onPaymentCompleted(token),
-    ));
+    // Get.to(() => WebViewScreen(
+    //   url: controller.paymentUrl,
+    //   // onPaymentCompleted: (token) => controller.onPaymentCompleted(token),
+    // ));
   }
 
   @override

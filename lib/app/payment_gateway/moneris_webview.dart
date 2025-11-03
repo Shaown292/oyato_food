@@ -7,9 +7,9 @@ import 'dart:convert';
 import '../modules/payment/controllers/payment_controller.dart';
 
 class MonerisCheckoutPage extends StatefulWidget {
-  final String ticket;
+  final String checkoutId;
   final String total;
-  const MonerisCheckoutPage({required this.ticket, required this.total});
+  const MonerisCheckoutPage({required this.checkoutId, required this.total});
 
   @override
   _MonerisCheckoutPageState createState() => _MonerisCheckoutPageState();
@@ -18,9 +18,13 @@ class MonerisCheckoutPage extends StatefulWidget {
 class _MonerisCheckoutPageState extends State<MonerisCheckoutPage> {
 
   late InAppWebViewController _controller;
+  bool _webViewInitialized = false;
+  bool paymentDone = false;
+
+
   @override
   Widget build(BuildContext context) {
-    print("Tciket ${widget.ticket}");
+    print("Tciket ${widget.checkoutId}");
     final html = '''<!DOCTYPE html>
 <html>
 <head>
@@ -70,13 +74,15 @@ class _MonerisCheckoutPageState extends State<MonerisCheckoutPage> {
 
       myCheckout.setCallback("payment_complete", function(e) {
         window.flutter_inappwebview.callHandler('payment_complete', e);
+        console.log("Moneris callback triggered: ", e);
       });
+      
 
       myCheckout.setCallback("error_event", function(e) {
         window.flutter_inappwebview.callHandler('payment_error', e);
       });
 
-      myCheckout.startCheckout("${widget.ticket}"); 
+      myCheckout.startCheckout("${widget.checkoutId}"); 
     }
 
     if (window.flutter_inappwebview) {
@@ -90,23 +96,38 @@ class _MonerisCheckoutPageState extends State<MonerisCheckoutPage> {
 
 ''';
 
-    return WillPopScope     (
-      onWillPop: () async => false,
+    return  WillPopScope(
+      onWillPop: () async => paymentDone ? true : false,
       child: Scaffold(
         body: InAppWebView(
           initialData: InAppWebViewInitialData(data: html),
+          initialSettings: InAppWebViewSettings(
+            javaScriptEnabled: true,
+            supportMultipleWindows: true,
+            javaScriptCanOpenWindowsAutomatically: true,
+          ),
           onWebViewCreated: (controller) {
             _controller = controller;
-
-            controller.addJavaScriptHandler(
-              handlerName: "paymentSuccess",
+            _controller.addJavaScriptHandler(
+              handlerName: 'payment_complete',
               callback: (args) {
-                final receipt = jsonEncode(args[0]);
-                print("✅ Payment Success: $receipt");
-
-                Navigator.pop(context, receipt);
+                _handlePaymentComplete(args);
+                print("Argsssss $args");
               },
             );
+            _controller.addJavaScriptHandler(
+              handlerName: 'payment_error',
+              callback: (args) {
+                print('Payment error: $args');
+                // Handle error case
+              },
+            );
+            print("Workinh");
+          },
+          onLoadStop: (controller, url) {
+            setState(() {
+              _webViewInitialized = true;
+            });
           },
         ),
       ),
@@ -114,30 +135,39 @@ class _MonerisCheckoutPageState extends State<MonerisCheckoutPage> {
   }
 
   void _handlePaymentComplete(List<dynamic> args) {
-    print('🔍 payment_complete args: $args');
-    if (args.isNotEmpty) {
-      try {
-        final data = args.first is String ? jsonDecode(args.first) : args.first;
-        if (data is Map) {
-          final ticket = data['ticket'];
-          final responseCode = data['response_code'];
-          print("✅ Payment completed successfully.");
-          print("🎫 Ticket: $ticket");
-          print("📄 Response Code: $responseCode");
-          _handlePostPayment(ticket, responseCode);
-        } else {
-          print("⚠️ Unexpected payment data format: $args");
-        }
-      } catch (e) {
-        print("❌ Error parsing payment data: $e");
-        print("⚠️ Raw args: $args");
-      }
+    print('payment_complete args: $args');
+
+    if (args.isEmpty) return;
+
+    var raw = args.first;
+    Map data;
+
+    try {
+      data = raw is String ? jsonDecode(raw) : raw;
+    } catch (e) {
+      print("JSON Parse Error: $e");
+      return;
+    }
+
+    final ticket = data['ticket'];
+    // final response = data['response']; // contains status info
+    final responseCode = data['response_code'];
+
+    print("✅ Payment completed");
+    print("🎫 Ticket: $ticket");
+    print("📄 Response Code: $responseCode");
+
+
+    if (ticket != null && responseCode == "001") {
+      print("response print too");
+      _handlePostPayment(ticket, responseCode);
     } else {
-      print("⚠️ No payment data received: $args");
+      print("⚠ Invalid response data");
     }
   }
 
   void _handlePostPayment(String ticket, String responseCode) async {
+    print("_handlePostPayment");
     final PaymentController paymentController = Get.put(PaymentController());
 
     // Show loading dialog
@@ -147,9 +177,9 @@ class _MonerisCheckoutPageState extends State<MonerisCheckoutPage> {
       builder: (_) => const Center(child: CircularProgressIndicator()),
     );
 
-    final bool paymentSuccessful =  await paymentController.cardPayment(
-      amount: widget.total,
+    final bool paymentSuccessful = await paymentController.cardPayment(
       ticket: ticket,
+      amount: widget.total,
     );
 
     // Remove loading dialog
@@ -184,10 +214,13 @@ class _MonerisCheckoutPageState extends State<MonerisCheckoutPage> {
         context: context,
         builder: (_) => AlertDialog(
           title: const Text("❌ Payment Failed"),
-          content: Text("Unbale to place order"),
+          content: Text("Unable to place order after payment."),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: (){
+                Navigator.of(context).pop();
+                Get.toNamed(Routes.DASHBOARD);
+              },
               child: const Text("OK"),
             ),
           ],
