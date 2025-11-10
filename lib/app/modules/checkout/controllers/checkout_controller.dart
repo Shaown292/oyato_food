@@ -36,7 +36,7 @@ class CheckoutController extends GetxController {
   RxString selectedShopId = ''.obs;
   RxString selectedPaymentMethodId = ''.obs;
   RxString shippingCost = "".obs;
-  RxString subTotal = "".obs;
+  RxDouble subTotal = 0.0.obs;
 
   final site = Rxn<SiteConfig>();
   String generateOrderId() {
@@ -182,15 +182,15 @@ class CheckoutController extends GetxController {
         final bill = data.first;
         priceDetail.value = bill.priceDetail;
         shippingDetail.value = bill.shippingDetail;
-
+        subTotal.value = priceDetail.value!.subTotal;
         // 🔹 Handle payment logic
         if (paymentMethod == "1") {
-         subTotal.value = priceDetail.value!.subTotal.toString();
 
-          emailPay(amount: subTotal.value, email: shippingDetail.value!.billingAddress.email);
+
+          emailPay(amount: subTotal.value.toString(), email: shippingDetail.value!.billingAddress.email);
 
         } else if (paymentMethod == "2") {
-          Get.to(() => MonerisPreloadPage());
+          Get.to(() => MonerisPreloadPage(), arguments: subTotal.value);
         }
 
         return true;

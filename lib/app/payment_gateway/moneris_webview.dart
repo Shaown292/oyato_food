@@ -198,7 +198,7 @@ class _MonerisCheckoutPageState extends State<MonerisCheckoutPage> {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  Get.offNamed(Routes.DASHBOARD);
+                  Get.offAllNamed(Routes.DASHBOARD);
                 },
                 child: const Text('OK'),
               ),

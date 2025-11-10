@@ -400,7 +400,7 @@ class ApiRepository {
     if (response["status"] == "success") {
 
       Get.snackbar("Success", response["response"]["message"]);
-      Get.offNamed(Routes.DASHBOARD);
+      Get.offAllNamed(Routes.DASHBOARD);
     } else {
 
       print("API Call");

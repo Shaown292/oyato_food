@@ -1,10 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
+import 'package:oyato_food/app/data/app_text_style.dart';
 import 'package:oyato_food/app/payment_gateway/moneris_webview.dart';
-import 'package:uuid/uuid.dart';
 
 class MonerisPreloadPage extends StatefulWidget {
   const MonerisPreloadPage({super.key});
@@ -14,10 +13,10 @@ class MonerisPreloadPage extends StatefulWidget {
 }
 
 class _MonerisPreloadPageState extends State<MonerisPreloadPage> {
-  final TextEditingController _amountController = TextEditingController();
-
   String responseText = "";
   String orderId = "";
+  late double totalAmount;
+
   String generateOrderId() {
     return DateTime.now().millisecondsSinceEpoch.toString();
   }
@@ -26,23 +25,15 @@ class _MonerisPreloadPageState extends State<MonerisPreloadPage> {
     const String storeId = "monca10634";
     const String apiToken = "HtLtrrh9q0DX4mXhtf7u";
     const String checkoutId = "chkt6PRRP10634";
-    const String environment = "qa"; // "prod" for live
+    const String environment = "qa";
     const String gatewayUrl =
         "https://gatewayt.moneris.com/chkt/request/request.php";
-
-    final double? amount = double.tryParse(_amountController.text);
-    if (amount == null || amount <= 0) {
-      setState(() {
-        responseText = "❌ Invalid amount entered.";
-      });
-      return;
-    }
 
     final data = {
       "store_id": storeId,
       "api_token": apiToken,
       "checkout_id": checkoutId,
-      "txn_total": amount.toStringAsFixed(2),
+      "txn_total": totalAmount.toStringAsFixed(2),
       "environment": environment,
       "action": "preload",
       "order_no": orderId,
@@ -52,80 +43,61 @@ class _MonerisPreloadPageState extends State<MonerisPreloadPage> {
     };
 
     try {
-      print("Oder ID: $orderId");
+      print("🧾 Sending preload for order: $orderId, amount: $totalAmount");
       final response = await http.post(
         Uri.parse(gatewayUrl),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(data),
       );
 
+      print("Raw Response: ${response.body}");
+
       if (response.statusCode == 200) {
         final decoded = jsonDecode(response.body);
-        setState(() {
-          responseText = const JsonEncoder.withIndent('  ').convert(decoded);
-        });
-
         if (decoded["response"]?["ticket"] != null) {
           final ticket = decoded["response"]["ticket"];
           debugPrint("✅ Ticket: $ticket");
-          Get.to(()=> MonerisCheckoutPage(checkoutId: ticket, total: amount.toString()));
-          // এখন তুমি চাইলে এই ticket দিয়ে Moneris Checkout WebView খুলে দিতে পারো।
+          Get.to(
+            () => MonerisCheckoutPage(
+              checkoutId: ticket,
+              total: totalAmount.toString(),
+            ),
+          );
         } else {
-          debugPrint("⚠️ No ticket in response");
+          debugPrint("⚠️ No ticket in response: ${response.body}");
         }
       } else {
-        setState(() {
-          responseText =
-          "❌ Error: Server returned ${response.statusCode}";
-        });
+        debugPrint("❌ Server error ${response.statusCode}");
       }
     } catch (e) {
-      setState(() {
-        responseText = "⚠️ Exception: $e";
-      });
+      debugPrint("⚠️ Exception: $e");
     }
   }
+
   @override
   void initState() {
-    sendPreloadRequest();
-    orderId = generateOrderId();
-    // TODO: implement initState
     super.initState();
+    orderId = generateOrderId();
+    totalAmount = Get.arguments ?? 0.0;
+
+    if (totalAmount > 0) {
+      sendPreloadRequest();
+    } else {
+      debugPrint("❌ totalAmount missing or zero.");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Moneris Preload (Direct)")),
-      body:
-      Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _amountController,
-              decoration: const InputDecoration(
-                labelText: "Enter Amount (CAD)",
-                border: OutlineInputBorder(),
-              ),
-              keyboardType:
-              const TextInputType.numberWithOptions(decimal: true),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: sendPreloadRequest,
-              child: const Text("Send Preload Request"),
-            ),
-
-            // Expanded(
-            //   child: SingleChildScrollView(
-            //     child: Text(
-            //       responseText,
-            //       style: const TextStyle(fontFamily: "monospace"),
-            //     ),
-            //   ),
-            // ),
-          ],
+      appBar: AppBar(title: const Text("Moneris Preload")),
+      body: Center(
+        child: SizedBox(
+          width: 180,
+          child: Text(
+            "Loading payment for \$${totalAmount.toStringAsFixed(2)}...",
+            style: AppTextStyle.textStyle26BlackBold,
+          ),
         ),
       ),
     );

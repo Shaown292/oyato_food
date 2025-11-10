@@ -361,7 +361,7 @@ class HomeWidget extends StatelessWidget {
               ),
 
               /// New Arrivals
-              Text("New Arrival 🔥", style: AppTextStyle.textStyle18BlackBold),
+              Text("All Product 🔥", style: AppTextStyle.textStyle18BlackBold),
 
               const SizedBox(height: 15),
 
