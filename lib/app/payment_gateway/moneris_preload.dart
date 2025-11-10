@@ -92,14 +92,29 @@ class _MonerisPreloadPageState extends State<MonerisPreloadPage> {
     return Scaffold(
       appBar: AppBar(title: const Text("Moneris Preload")),
       body: Center(
-        child: SizedBox(
-          width: 180,
-          child: Text(
-            "Loading payment for \$${totalAmount.toStringAsFixed(2)}...",
-            style: AppTextStyle.textStyle26BlackBold,
+        child: Card(
+          margin: EdgeInsets.all(16),
+          elevation: 4,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text("Payment Summary", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                SizedBox(height: 16),
+                Text("Order ID: $orderId"),
+                Text("Amount: \$${totalAmount.toStringAsFixed(2)}"),
+                SizedBox(height: 24),
+                CircularProgressIndicator(),
+                SizedBox(height: 16),
+                Text("Processing your payment...", style: TextStyle(color: Colors.grey)),
+              ],
+            ),
           ),
         ),
-      ),
+      )
+      ,
     );
   }
 }

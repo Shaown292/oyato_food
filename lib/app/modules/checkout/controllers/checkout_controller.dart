@@ -185,11 +185,10 @@ class CheckoutController extends GetxController {
         subTotal.value = priceDetail.value!.subTotal;
         // 🔹 Handle payment logic
         if (paymentMethod == "1") {
-
-
           emailPay(amount: subTotal.value.toString(), email: shippingDetail.value!.billingAddress.email);
 
         } else if (paymentMethod == "2") {
+
           Get.to(() => MonerisPreloadPage(), arguments: subTotal.value);
         }
 
