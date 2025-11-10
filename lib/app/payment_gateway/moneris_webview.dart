@@ -134,7 +134,7 @@ class _MonerisCheckoutPageState extends State<MonerisCheckoutPage> {
     );
   }
 
-  void _handlePaymentComplete(List<dynamic> args) {
+  void _handlePaymentComplete(List<dynamic> args)  {
     print('payment_complete args: $args');
 
     if (args.isEmpty) return;
@@ -167,7 +167,7 @@ class _MonerisCheckoutPageState extends State<MonerisCheckoutPage> {
   }
 
   void _handlePostPayment(String ticket, String responseCode) async {
-    print("_handlePostPayment");
+    print("_handlePostPayment $ticket");
     final PaymentController paymentController = Get.put(PaymentController());
 
     // Show loading dialog
@@ -177,10 +177,7 @@ class _MonerisCheckoutPageState extends State<MonerisCheckoutPage> {
       builder: (_) => const Center(child: CircularProgressIndicator()),
     );
 
-    final bool paymentSuccessful = await paymentController.cardPayment(
-      ticket: ticket,
-      amount: widget.total,
-    );
+    final bool paymentSuccessful = await paymentController.sendBillPayRequest(ticket, widget.total);
 
     // Remove loading dialog
     if (Navigator.of(context).canPop()) {

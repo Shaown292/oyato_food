@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 import 'package:oyato_food/app/payment_gateway/moneris_webview.dart';
+import 'package:uuid/uuid.dart';
 
 class MonerisPreloadPage extends StatefulWidget {
   const MonerisPreloadPage({super.key});
@@ -16,6 +17,10 @@ class _MonerisPreloadPageState extends State<MonerisPreloadPage> {
   final TextEditingController _amountController = TextEditingController();
 
   String responseText = "";
+  String orderId = "";
+  String generateOrderId() {
+    return DateTime.now().millisecondsSinceEpoch.toString();
+  }
 
   Future<void> sendPreloadRequest() async {
     const String storeId = "monca10634";
@@ -40,13 +45,14 @@ class _MonerisPreloadPageState extends State<MonerisPreloadPage> {
       "txn_total": amount.toStringAsFixed(2),
       "environment": environment,
       "action": "preload",
-      "order_no": DateTime.now().millisecondsSinceEpoch.toString(),
+      "order_no": orderId,
       "cust_id": "1234",
       "dynamic_descriptor": "dyndesc",
       "language": "en",
     };
 
     try {
+      print("Oder ID: $orderId");
       final response = await http.post(
         Uri.parse(gatewayUrl),
         headers: {"Content-Type": "application/json"},
@@ -62,7 +68,7 @@ class _MonerisPreloadPageState extends State<MonerisPreloadPage> {
         if (decoded["response"]?["ticket"] != null) {
           final ticket = decoded["response"]["ticket"];
           debugPrint("✅ Ticket: $ticket");
-          Get.to(()=> MonerisCheckoutPage(checkoutId: ticket, total: "30"));
+          Get.to(()=> MonerisCheckoutPage(checkoutId: ticket, total: amount.toString()));
           // এখন তুমি চাইলে এই ticket দিয়ে Moneris Checkout WebView খুলে দিতে পারো।
         } else {
           debugPrint("⚠️ No ticket in response");
@@ -79,12 +85,20 @@ class _MonerisPreloadPageState extends State<MonerisPreloadPage> {
       });
     }
   }
+  @override
+  void initState() {
+    sendPreloadRequest();
+    orderId = generateOrderId();
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Moneris Preload (Direct)")),
-      body: Padding(
+      body:
+      Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
@@ -102,15 +116,15 @@ class _MonerisPreloadPageState extends State<MonerisPreloadPage> {
               onPressed: sendPreloadRequest,
               child: const Text("Send Preload Request"),
             ),
-            const SizedBox(height: 24),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Text(
-                  responseText,
-                  style: const TextStyle(fontFamily: "monospace"),
-                ),
-              ),
-            ),
+
+            // Expanded(
+            //   child: SingleChildScrollView(
+            //     child: Text(
+            //       responseText,
+            //       style: const TextStyle(fontFamily: "monospace"),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

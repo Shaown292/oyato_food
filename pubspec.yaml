@@ -53,6 +53,7 @@ dependencies:
   geocoding: ^2.1.5
   flutter_inappwebview:
   flutter_html:
+  uuid: ^4.4.0
 
 
 dev_dependencies:

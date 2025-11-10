@@ -113,6 +113,7 @@ class AppPages {
       name: _Paths.PAYMENT,
       page: () =>  PaymentView(),
       binding: PaymentBinding(),
+
     ),
   ];
 }
