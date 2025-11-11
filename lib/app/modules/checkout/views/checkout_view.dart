@@ -508,7 +508,7 @@ class CheckoutView extends GetView<CheckoutController> {
                 onTap: () async {
                   final success = await controller.fetchBillPay(
                     shippingCost: controller.shippingCost.value,
-                    deliveryOption: 'shipping',
+                    deliveryOption: controller.deliveryOptionId.value == "1" ?'shipping' : 'pickup',
                     emailShipping: controller.emailController.text,
                     fNameShipping: controller.firstNameController.text,
                     lNameShipping: controller.lastNameController.text,
